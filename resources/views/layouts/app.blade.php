@@ -17,7 +17,7 @@
 
             <div class="space-x-4">
                 <a href="/" class="hover:text-gray-200">Home</a>
-                <a href="/about" class="hover:text-gray-200">About</a>
+                <a href="/kategori_lensa" class="hover:text-gray-200">kategori lensa</a>
                 <a href="/contact" class="hover:text-gray-200">Contact</a>
             </div>
         </div>
@@ -41,11 +41,15 @@
                 </li>
 
                 <li>
-                    <a href="/products" class="block p-2 rounded hover:bg-blue-100">
-                        Produk
+                    <a href="/kategori_lensa" class="block p-2 rounded hover:bg-blue-100">
+                        Kategori Lensa
                     </a>
                 </li>
-
+                <li>
+                    <a href="/kategori_frame" class="block p-2 rounded hover:bg-blue-100">
+                        Kategori Frame
+                    </a>
+                </li>
                 <li>
                     <a href="/users" class="block p-2 rounded hover:bg-blue-100">
                         User
@@ -57,6 +61,7 @@
                         Laporan
                     </a>
                 </li>
+                
             </ul>
         </aside>
 
