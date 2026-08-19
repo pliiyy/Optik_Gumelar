@@ -24,6 +24,7 @@
             <a href="/tentang-kami" class="text-slate-600 hover:text-slate-900 font-medium transition">Tentang Kami</a>
             <a href="/kontak" class="text-slate-600 hover:text-slate-900 font-medium transition">Kontak</a>
             <a href="/login" class="text-slate-600 hover:text-slate-900 font-medium transition">Login</a>
+            <a href="/cabang" class="text-slate-600 hover:text-slate-900 font-medium transition">Cabang</a>
             
             <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-slate-200 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white transition flex gap-2 items-center bg-green-400 text-slate-900 font-medium">
                 <span>Whatsapp</span>
@@ -53,6 +54,7 @@
                         <li><a href="/tentang-kami" class="hover:text-sky-400 transition">Tentang Kami</a></li>
                         <li><a href="/kontak" class="hover:text-sky-400 transition">Kontak</a></li>
                         <li><a href="/login" class="hover:text-sky-400 transition">Login</a></li>
+                        <li><a href="/cabang" class="hover:text-sky-400 transition">Cabang</a></li>
                     </ul>
                 </div>
                 <div>
