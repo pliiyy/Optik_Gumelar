@@ -4,75 +4,112 @@
 
 @section('content')
 
-<div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
-    <p class="text-sm text-gray-500">Ringkasan data sistem Anda</p>
+<!-- Welcome Banner -->
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-linear-to-r from-blue-600 to-indigo-600 p-4 rounded-2xl text-white shadow-sm">
+    <div>
+        <h1 class="text-2xl font-bold">Selamat Datang, Administrator! 👋</h1>
+        <p class="text-blue-100 text-sm mt-1">Berikut adalah ringkasan data operasional Optik Gumelar hari ini.</p>
+    </div>
+    <div class="flex gap-3">
+        <a href="/kategori_lensa" class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition backdrop-blur-sm border border-white/10 flex items-center gap-2">
+            <i class="bi bi-plus-lg"></i> Tambah Kategori
+        </a>
+    </div>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<!-- Stat Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-200">
+    <!-- Card 1: Total User -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 hover:shadow-md transition duration-200 relative overflow-hidden">
         <div class="flex items-center justify-between">
             <div>
-                <h5 class="text-gray-500 text-sm font-medium">Total User</h5>
-                <h2 class="text-3xl font-bold text-gray-800 mt-1">120</h2>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total User</p>
+                <h3 class="text-3xl font-extrabold text-slate-800 mt-2">120</h3>
             </div>
-            <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-4a4 4 0 10-8 0 4 4 0 008 0zm6 4a4 4 0 10-8 0 4 4 0 008 0z" />
-                </svg>
+            <div class="bg-blue-50 text-blue-600 w-12 h-12 rounded-2xl flex items-center justify-center text-xl">
+                <i class="bi bi-people-fill"></i>
             </div>
         </div>
-        <p class="text-xs text-green-500 mt-3">▲ 12% dari bulan lalu</p>
+        <div class="mt-4 flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+            <i class="bi bi-arrow-up-right"></i> <span>12% dari bulan lalu</span>
+        </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-200">
+    <!-- Card 2: Kategori Produk (Lensa & Frame) -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 hover:shadow-md transition duration-200 relative overflow-hidden">
         <div class="flex items-center justify-between">
             <div>
-                <h5 class="text-gray-500 text-sm font-medium">Produk</h5>
-                <h2 class="text-3xl font-bold text-gray-800 mt-1">55</h2>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Total Produk</p>
+                <h3 class="text-3xl font-extrabold text-slate-800 mt-2">55</h3>
             </div>
-            <div class="bg-amber-100 text-amber-600 p-3 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+            <div class="bg-amber-50 text-amber-600 w-12 h-12 rounded-2xl flex items-center justify-center text-xl">
+                <i class="bi bi-eyeglasses"></i>
             </div>
         </div>
-        <p class="text-xs text-gray-400 mt-3">Stok tersedia</p>
+        <div class="mt-4 flex items-center gap-1 text-xs text-slate-400 font-medium">
+            <span>Stok Lensa & Frame Tersedia</span>
+        </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow duration-200">
+    <!-- Card 3: Transaksi -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 hover:shadow-md transition duration-200 relative overflow-hidden">
         <div class="flex items-center justify-between">
             <div>
-                <h5 class="text-gray-500 text-sm font-medium">Transaksi</h5>
-                <h2 class="text-3xl font-bold text-gray-800 mt-1">350</h2>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">Transaksi</p>
+                <h3 class="text-3xl font-extrabold text-slate-800 mt-2">350</h3>
             </div>
-            <div class="bg-green-100 text-green-600 p-3 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 8h6m-5 4h4m-5 4h6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
+            <div class="bg-emerald-50 text-emerald-600 w-12 h-12 rounded-2xl flex items-center justify-center text-xl">
+                <i class="bi bi-receipt"></i>
             </div>
         </div>
-        <p class="text-xs text-green-500 mt-3">▲ 8% dari bulan lalu</p>
+        <div class="mt-4 flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+            <i class="bi bi-arrow-up-right"></i> <span>8% dari bulan lalu</span>
+        </div>
     </div>
 
 </div>
 
-<div class="mt-6 flex gap-3">
+<!-- Quick Actions & Recent Info Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Quick Actions Panel -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 lg:col-span-1">
+        <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+            <i class="bi bi-lightning-charge text-amber-500"></i> Aksi Cepat
+        </h3>
+        <div class="space-y-3">
+            <a href="/kategori_lensa" class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition text-sm font-medium">
+                <span class="flex items-center gap-3"><i class="bi bi-circle-square"></i> Kelola Kategori Lensa</span>
+                <i class="bi bi-chevron-right text-xs"></i>
+            </a>
+            <a href="/kategori_frame" class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition text-sm font-medium">
+                <span class="flex items-center gap-3"><i class="bi bi-eyeglasses"></i> Kelola Kategori Frame</span>
+                <i class="bi bi-chevron-right text-xs"></i>
+            </a>
+            <a href="/reports" class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-600 transition text-sm font-medium">
+                <span class="flex items-center gap-3"><i class="bi bi-file-earmark-bar-graph"></i> Lihat Laporan</span>
+                <i class="bi bi-chevron-right text-xs"></i>
+            </a>
+        </div>
+    </div>
 
-    <button class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition-colors duration-150">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        Tambah Data
-    </button>
-
-    <button class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition-colors duration-150">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-        Simpan
-    </button>
+    <!-- Placeholder Aktivitas / Tabel Singkat -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 lg:col-span-2">
+        <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+            <i class="bi bi-clock-history text-blue-500"></i> Sistem Status
+        </h3>
+        <div class="p-4 rounded-xl bg-blue-50/50 border border-blue-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-700">Database & Server Terhubung</p>
+                    <p class="text-xs text-slate-400">Semua modul berjalan dengan normal dan stabil.</p>
+                </div>
+            </div>
+            <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full">Online</span>
+        </div>
+    </div>
 
 </div>
 

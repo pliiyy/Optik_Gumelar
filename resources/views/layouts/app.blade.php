@@ -1,88 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Laravel App')</title>
+    <title>@yield('title', 'Dashboard') | Optik Gumelar</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-slate-50 text-slate-800">
 
-    <!-- Navbar -->
-    <nav class="bg-blue-600 text-white shadow">
-        <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-            <h1 class="text-xl font-bold">
-                Laravel App
-            </h1>
-
-            <div class="space-x-4">
-                <a href="/" class="hover:text-gray-200">Home</a>
-                <a href="/kategori_lensa" class="hover:text-gray-200">kategori lensa</a>
-                <a href="/contact" class="hover:text-gray-200">Contact</a>
+    <!-- Slim Navbar -->
+    <nav class="bg-white border-b border-slate-200 fixed top-0 w-full z-50 h-14 flex items-center justify-between px-6 shadow-sm">
+        <div class="flex items-center gap-4">
+            <span class="font-bold text-blue-600 text-lg">Optik Gumelar</span>
+            <span class="text-slate-300">|</span>
+            <span class="text-xs text-slate-500 font-medium">ADMIN DASHBOARD</span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <a href="/" target="_blank" class="text-xs font-semibold text-slate-500 hover:text-blue-600 transition">
+                <i class="bi bi-box-arrow-up-right mr-1"></i> Preview
+            </a>
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
+                AD
             </div>
         </div>
     </nav>
 
-    <div class="flex">
+    <!-- Main Wrapper -->
+    <div class="flex pt-14 h-screen">
 
         <!-- Sidebar -->
-        <aside class="w-64 min-h-screen bg-white shadow-md">
-            <div class="p-5 border-b">
-                <h2 class="font-bold text-lg">
-                    Menu
-                </h2>
-            </div>
-
-            <ul class="p-3 space-y-2">
-                <li>
-                    <a href="/" class="block p-2 rounded hover:bg-blue-100">
-                        Dashboard
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/kategori_lensa" class="block p-2 rounded hover:bg-blue-100">
-                        Kategori Lensa
-                    </a>
-                </li>
-                <li>
-                    <a href="/kategori_frame" class="block p-2 rounded hover:bg-blue-100">
-                        Kategori Frame
-                    </a>
-                </li>
-                <li>
-                    <a href="/users" class="block p-2 rounded hover:bg-blue-100">
-                        User
-                    </a>
-                </li>
-
-                <li>
-                    <a href="/reports" class="block p-2 rounded hover:bg-blue-100">
-                        Laporan
-                    </a>
-                </li>
+        <aside class="w-56 bg-slate-900 text-slate-300 p-4 space-y-8">
+            <div class="space-y-1">
+                <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Menu</p>
                 
-            </ul>
+                @php
+                    $menu = [
+                        ['url' => '/dashboard', 'icon' => 'bi-speedometer2', 'label' => 'Dashboard'],
+                        ['url' => '/kategori_lensa', 'icon' => 'bi-circle-square', 'label' => 'Kategori Lensa'],
+                        ['url' => '/kategori_frame', 'icon' => 'bi-eyeglasses', 'label' => 'Kategori Frame'],
+                        ['url' => '/users', 'icon' => 'bi-people', 'label' => 'Users'],
+                        ['url' => '/reports', 'icon' => 'bi-graph-up', 'label' => 'Laporan'],
+                    ];
+                @endphp
+
+                @foreach($menu as $item)
+                    <a href="{{ $item['url'] }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition hover:bg-blue-600 hover:text-white {{ request()->is(ltrim($item['url'], '/')) ? 'bg-blue-600 text-white' : '' }}">
+                        <i class="bi {{ $item['icon'] }}"></i> {{ $item['label'] }}
+                    </a>
+                @endforeach
+            </div>
         </aside>
 
-        <!-- Content -->
-        <main class="flex-1 p-6">
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-4">
+            <div class=" mx-auto">
 
-            <!-- Bootstrap Card -->
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    @yield('title')
-                </div>
-
-                <div class="card-body">
-
+                <!-- Main Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
                     @yield('content')
-
                 </div>
+
             </div>
-
         </main>
-
     </div>
 
 </body>
