@@ -83,10 +83,10 @@
 
                 <div class="md:w-1/2 grid grid-cols-2 gap-4">
                     <div class="bg-slate-100 h-64 rounded-2xl overflow-hidden">
-                        <img src="{{ asset('images/credit.png') }}" class="w-full h-full object-cover" alt="Credit">
+                        <img src="{{ asset('credit.png') }}" class="w-full h-full object-cover" alt="Credit">
                     </div>
                     <div class="bg-sky-600 h-64 rounded-2xl mt-8 overflow-hidden">
-                        <img src="{{ asset('images/tech.png') }}" class="w-full h-full object-cover" alt="Tech">
+                        <img src="{{ asset('tech.png') }}" class="w-full h-full object-cover" alt="Tech">
                     </div>
                 </div>
             </div>

@@ -50,10 +50,9 @@
                     <h3 class="text-white font-semibold mb-6">Navigasi</h3>
                     <ul class="space-y-4 text-sm">
                         <li><a href="/" class="hover:text-sky-400 transition">Beranda</a></li>
-                        <li><a href="/tentang-kami/profile" class="hover:text-sky-400 transition">Tentang Kami</a></li>
-                        <li><a href="/karir" class="hover:text-sky-400 transition">Karir</a></li>
+                        <li><a href="/tentang-kami" class="hover:text-sky-400 transition">Tentang Kami</a></li>
                         <li><a href="/kontak" class="hover:text-sky-400 transition">Kontak</a></li>
-                        <li><a href="/faq" class="hover:text-sky-400 transition">FAQ</a></li>
+                        <li><a href="/login" class="hover:text-sky-400 transition">Login</a></li>
                     </ul>
                 </div>
                 <div>
