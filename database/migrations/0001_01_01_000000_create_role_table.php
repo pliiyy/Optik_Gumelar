@@ -11,22 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tabel_cabang', function (Blueprint $table) {
+        Schema::create('role', function (Blueprint $table) {
             $table->id();
             $table->string("nama");
-            $table->string("kode");
-            $table->string("alamat");
-            $table->string("telepon");
-            $table->string("email");
-            $table->string("pj");
             $table->boolean("status");
             $table->timestamps();
-
-            $table->unsignedBigInteger('area_id');
-
-$table->foreign('area_id')
-      ->references('id')
-      ->on('areas');
         });
     }
 
@@ -35,6 +24,6 @@ $table->foreign('area_id')
      */
     public function down(): void
     {
-        Schema::dropIfExists('tabel_cabang');
+        Schema::dropIfExists('role');
     }
 };

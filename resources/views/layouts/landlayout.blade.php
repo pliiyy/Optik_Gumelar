@@ -21,25 +21,9 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
             <a href="/" class="text-slate-600 hover:text-slate-900 font-medium transition">Beranda</a>
-
-            <!-- Dropdown Sederhana (bisa pakai Alpine.js jika butuh interaktif) -->
-            <div class="relative group">
-                <button class="flex items-center text-slate-600 hover:text-slate-900 font-medium transition py-2">
-                    Tentang Kami
-                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-                    </svg>
-                </button>
-                <div class="absolute left-0 w-48 bg-white border border-slate-100 shadow-xl rounded-xl py-2 hidden group-hover:block">
-                    <a href="/tentang-kami/profile" class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Profile</a>
-                    <a href="/tentang-kami/struktur" class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">Struktur</a>
-                </div>
-            </div>
-
-            <a href="/portfolio" class="text-slate-600 hover:text-slate-900 font-medium transition">Portfolio</a>
-            <a href="/karir" class="text-slate-600 hover:text-slate-900 font-medium transition">Karir</a>
+            <a href="/tentang-kami" class="text-slate-600 hover:text-slate-900 font-medium transition">Tentang Kami</a>
             <a href="/kontak" class="text-slate-600 hover:text-slate-900 font-medium transition">Kontak</a>
-            <a href="/faq" class="text-slate-600 hover:text-slate-900 font-medium transition">FAQ</a>
+            <a href="/login" class="text-slate-600 hover:text-slate-900 font-medium transition">Login</a>
             
             <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-slate-200 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white transition flex gap-2 items-center bg-green-400 text-slate-900 font-medium">
                 <span>Whatsapp</span>
