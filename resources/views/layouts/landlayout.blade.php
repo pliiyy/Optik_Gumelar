@@ -24,6 +24,23 @@
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
             <a href="/" class="text-slate-600 hover:text-slate-900 font-medium transition">Beranda</a>
+
+            <!-- Dropdown: Produk -->
+            <div class="relative">
+    <button type="button" onclick="toggleProdukDropdown()" id="produk-toggle" class="text-slate-600 hover:text-slate-900 font-medium transition flex items-center gap-1">
+        Produk
+        <svg id="produk-chevron" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+
+    <div id="produk-dropdown" class="hidden absolute left-0 top-full mt-3 w-40 bg-white border border-slate-200 rounded-lg shadow-lg py-2 z-50">
+        <a href="/produk/frame" class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">Frame</a>
+        <a href="/produk/lensa" class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">Lensa</a>
+    </div>
+</div>
+            </div>
+
             <a href="/tentang-kami" class="text-slate-600 hover:text-slate-900 font-medium transition">Tentang Kami</a>
             <a href="/kontak" class="text-slate-600 hover:text-slate-900 font-medium transition">Kontak</a>
             <a href="/login" class="text-slate-600 hover:text-slate-900 font-medium transition">Login</a>
@@ -83,7 +100,20 @@
             </div>
         </div>
     </footer>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script>
+    function toggleProdukDropdown() {
+        document.getElementById('produk-dropdown').classList.toggle('hidden');
+        document.getElementById('produk-chevron').classList.toggle('rotate-180');
+    }
 
+    document.addEventListener('click', function (e) {
+        const toggle = document.getElementById('produk-toggle');
+        const dropdown = document.getElementById('produk-dropdown');
+        if (toggle && dropdown && !toggle.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+            document.getElementById('produk-chevron').classList.remove('rotate-180');
+        }
+    });
+</script>
 </body>
 </html>

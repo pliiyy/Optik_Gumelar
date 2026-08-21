@@ -30,5 +30,4 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     });
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::resource('users', UserController::class);
 });
