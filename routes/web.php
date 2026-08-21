@@ -27,5 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::get('produk/frame', function () {
+    return view('frame');
+});
+Route::get('produk/lensa', function () {
+    return view('lensa');
 });

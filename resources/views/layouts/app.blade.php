@@ -18,8 +18,8 @@
         </div>
         
         <div class="flex items-center gap-4">
-            <a href="/" target="_blank" class="text-xs font-semibold text-slate-500 hover:text-blue-600 transition">
-                <i class="bi bi-box-arrow-up-right mr-1"></i> Preview
+            <a href="{{ route('logout') }}" class="text-xs font-semibold text-slate-500 hover:text-blue-600 transition">
+                <i class="bi bi-logout mr-1"></i> Logout
             </a>
             <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
                 AD
