@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
     // Proses login
+    public function showLogin(Request $request) {
+        if (Auth::check()) {
+        return redirect()->intended('/dashboard');
+    }
+        return view('login');
+    }
+
     public function login(Request $request) {
         $credentials = $request->validate([
             'email' => ['required', 'email'],

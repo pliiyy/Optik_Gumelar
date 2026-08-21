@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('home');
@@ -20,6 +21,7 @@ Route::get('/cabang', function () {
 });
 
 Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin']);
     Route::post('/login', [AuthController::class, 'login']);
 });
 
@@ -28,4 +30,5 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     });
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::resource('users', UserController::class);
 });
