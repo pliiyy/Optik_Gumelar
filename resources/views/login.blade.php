@@ -8,9 +8,8 @@
             <p class="mt-2 text-sm text-slate-600">Masuk ke akun Optik Gumelar Anda</p>
         </div>
 
-        <form class="mt-8 space-y-6"  method="POST">
+        <form class="mt-8 space-y-6"  method="POST" action="/login">
             @csrf
-            
             <div class="rounded-md shadow-sm space-y-4">
                 <!-- Email -->
                 <div>
