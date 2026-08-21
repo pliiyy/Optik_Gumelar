@@ -19,6 +19,12 @@ Route::get('/login', function () {
 Route::get('/cabang', function () {
     return view('cabang');
 });
+Route::get('/produk/frame', function () {
+    return view('frame');
+});
+Route::get('/produk/lensa', function () {
+    return view('lensa');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin']);
