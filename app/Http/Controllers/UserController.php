@@ -19,14 +19,14 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'role' => 'required|in:ADMIN,USER',
+            'role' => 'required|in:ADMIN,KARYAWAN,PELANGGAN',
             'password' => 'required|min:6',
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role' => strtoupper($request->role),
             'password' => Hash::make($request->password),
         ]);
 
@@ -40,13 +40,13 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|in:ADMIN,USER',
+            'role' => 'required|in:ADMIN,KARYAWAN,PELANGGAN',
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role' => strtoupper($request->role),
         ]);
 
         return redirect()->route('users.index')->with('success', 'Pengguna berhasil diperbarui!');

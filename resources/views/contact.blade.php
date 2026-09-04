@@ -33,7 +33,7 @@
                                     Telepon / WA
                                 </p>
                                 <p class="text-slate-700 font-medium">
-                                    +62 813-1329-3991
+                                    +62 813-1384-2963
                                 </p>
                             </div>
                         </div>

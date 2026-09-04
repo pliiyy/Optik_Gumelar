@@ -15,6 +15,24 @@
                     </button>
                 </div>
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
@@ -34,7 +52,7 @@
                                         <td class="fw-semibold text-dark">{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
-                                            <span class="badge bg-{{ $user->role == 'ADMIN' ? 'danger' : 'info' }} px-2 py-1">
+                                            <span class="badge bg-{{ $user->role == 'ADMIN' ? 'danger' : ($user->role == 'KARYAWAN' ? 'warning' : 'success') }} px-2 py-1 text-white">
                                                 {{ $user->role }}
                                             </span>
                                         </td>
@@ -111,7 +129,8 @@
                         <select name="role" id="role" class="form-select @error('role') is-invalid @enderror">
                             <option value="">Pilih Role...</option>
                             <option value="ADMIN" {{ old('role') == 'ADMIN' ? 'selected' : '' }}>ADMIN</option>
-                            <option value="USER" {{ old('role') == 'USER' ? 'selected' : '' }}>USER</option>
+                            <option value="PELANGGAN" {{ old('role') == 'PELANGGAN' ? 'selected' : '' }}>PELANGGAN</option>
+                            <option value="KARYAWAN" {{ old('role') == 'KARYAWAN' ? 'selected' : '' }}>KARYAWAN</option>
                         </select>
                         @error('role')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -162,7 +181,8 @@
                         <label for="edit-role" class="form-label fw-semibold">Role:</label>
                         <select name="role" id="edit-role" class="form-select" required>
                             <option value="ADMIN">ADMIN</option>
-                            <option value="USER">USER</option>
+                            <option value="KARYAWAN">KARYAWAN</option>
+                            <option value="PELANGGAN">PELANGGAN</option>
                         </select>
                     </div>
                 </div>
