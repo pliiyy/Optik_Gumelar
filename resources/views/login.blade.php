@@ -44,6 +44,11 @@
             </div>
         </form>
 
+        <p class="text-center text-sm text-slate-600">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="font-semibold text-sky-600 hover:text-sky-700">Daftar sekarang</a>
+        </p>
+
         @if ($errors->any())
             <div class="mt-4 p-4 bg-red-50 text-red-700 text-sm rounded-lg">
                 <ul>
@@ -51,6 +56,12 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="mt-4 rounded-lg bg-green-50 p-4 text-sm text-green-700">
+                {{ session('success') }}
             </div>
         @endif
     </div>

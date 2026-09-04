@@ -82,4 +82,21 @@ class RoleAndOrderFlowTest extends TestCase
 
         $this->actingAs($customer)->get('/lenses')->assertStatus(403);
     }
+
+    public function test_guest_can_register_as_customer(): void
+    {
+        $response = $this->post('/register', [
+            'name' => 'Pelanggan Baru',
+            'email' => 'baru@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect('/login');
+        $this->assertDatabaseHas('users', [
+            'name' => 'Pelanggan Baru',
+            'email' => 'baru@example.com',
+            'role' => 'PELANGGAN',
+        ]);
+    }
 }

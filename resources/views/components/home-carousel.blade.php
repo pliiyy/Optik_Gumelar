@@ -1,10 +1,12 @@
-<section class="relative h-125 md:h-150 w-full overflow-hidden">
-    <div class="swiper myHomeSwiper h-full w-full">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<section class="relative w-full overflow-hidden px-4 py-4 sm:px-6 lg:px-10">
+    <div class="swiper myHomeSwiper mx-auto h-[min(70vh,640px)] min-h-[420px] w-full max-w-7xl overflow-hidden rounded-2xl shadow-xl">
         <div class="swiper-wrapper">
             
             <!-- Slide 1 -->
-            <div class="swiper-slide relative h-full w-full flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel3.png') }}" alt="Pemeriksaan Mata Profesional" class="absolute inset-0 w-full h-full object-cover">
+            <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
+                <img src="{{ asset('carousel3.png') }}" alt="Pemeriksaan Mata Profesional" class="absolute inset-0 h-full w-full object-cover" loading="eager">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Pemeriksaan Mata Profesional</h1>
@@ -13,8 +15,8 @@
             </div>
 
             <!-- Slide 2 -->
-            <div class="swiper-slide relative h-full w-full flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel1.png') }}" alt="Frame Stylish" class="absolute inset-0 w-full h-full object-cover">
+            <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
+                <img src="{{ asset('carousel1.png') }}" alt="Frame Stylish" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Frame Stylish</h1>
@@ -23,8 +25,8 @@
             </div>
 
             <!-- Slide 3 -->
-            <div class="swiper-slide relative h-full w-full flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel2.png') }}" alt="Lensa Berkualitas" class="absolute inset-0 w-full h-full object-cover">
+            <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
+                <img src="{{ asset('carousel2.png') }}" alt="Lensa Berkualitas" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Lensa Berkualitas</h1>
@@ -33,8 +35,8 @@
             </div>
 
             <!-- Slide 4 -->
-            <div class="swiper-slide relative h-full w-full flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel4.png') }}" alt="Servis Kacamata & Perawatan" class="absolute inset-0 w-full h-full object-cover">
+            <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
+                <img src="{{ asset('carousel4.png') }}" alt="Servis Kacamata & Perawatan" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Servis Kacamata & Perawatan</h1>
@@ -49,22 +51,33 @@
     </div>
 </section>
 
-<!-- Script inisialisasi Swiper -->
-@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    import Swiper from 'swiper';
-    import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-    import 'swiper/css';
-    import 'swiper/css/pagination';
-    import 'swiper/css/navigation';
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.querySelector('.myHomeSwiper');
 
-    const swiper = new Swiper('.myHomeSwiper', {
-        modules: [Autoplay, Pagination, Navigation],
-        spaceBetween: 0,
-        centeredSlides: true,
-        autoplay: { delay: 5000, disableOnInteraction: false },
-        pagination: { clickable: true },
-        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        if (!carousel || typeof Swiper === 'undefined') {
+            return;
+        }
+
+        new Swiper(carousel, {
+            direction: 'horizontal',
+            loop: true,
+            speed: 700,
+            grabCursor: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            pagination: {
+                el: carousel.querySelector('.swiper-pagination'),
+                clickable: true,
+            },
+            navigation: {
+                nextEl: carousel.querySelector('.swiper-button-next'),
+                prevEl: carousel.querySelector('.swiper-button-prev'),
+            },
+        });
     });
 </script>
-@endpush
