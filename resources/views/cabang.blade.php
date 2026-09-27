@@ -2,38 +2,7 @@
 
 @section('content')
 
-@php
-        $branches = [
-            [
-                'name' => 'Optik Gumelar Ciburaleng',
-                'phone' => '+62 822-1234-5678',
-                'query' => 'Optik Gumelar Ciburaleng',
-                'address' => 'Jalan Ciburaleng No. 12, Bandung',
-                'coord' => '-6.9662878,107.8181306',
-            ],
-            [
-                'name' => 'Optik Gumelar Cinunuk',
-                'phone' => '+62 822-2345-6789',
-                'query' => 'Optik Gumelar Cinunuk',
-                'address' => 'Jalan Cinunuk No. 45, Bandung',
-                'coord' => '-6.9394172,107.7386285',
-            ],
-            [
-                'name' => 'Optik Gumelar Cibiru',
-                'phone' => '+62 822-3456-7890',
-                'query' => 'Optik Gumelar Cibiru',
-                'address' => 'Jalan Raya Cibiru No. 88, Bandung',
-                'coord' => '-6.9341978,107.7173447',
-            ],
-            [
-                'name' => 'Optik Gumelar Cipacing',
-                'phone' => '+62 822-4567-8901',
-                'query' => 'Optik Gumelar Cipacing',
-                'address' => 'Jalan Cipacing No. 33, Bandung',
-                'coord' => '-6.9471867,107.7589176',
-            ],
-        ];
-    @endphp
+@php($branches = config('branches'))
  
     <div class="pt-20 bg-slate-50 min-h-screen">
  
@@ -97,7 +66,7 @@
                                 </div>
 
                                 <a
-                                    href="https://www.google.com/maps/search/?api=1&query={{ urlencode($branch['coord']) }}"
+                                    href="https://www.google.com/maps/search/?api=1&query={{ urlencode($branch['latitude'] . ',' . $branch['longitude']) }}"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     class="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-600 px-4 py-2 font-semibold text-sky-700 transition hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
@@ -110,7 +79,7 @@
                         <div class="h-72 sm:h-80">
                             <iframe
                                 title="{{ $branch['name'] }}"
-                                src="https://maps.google.com/maps?q={{ $branch['coord'] }}&{{ urlencode($branch['query']) }}&z=15&output=embed"
+                                src="https://maps.google.com/maps?q={{ urlencode($branch['latitude'] . ',' . $branch['longitude'] . ' ' . $branch['query']) }}&z=15&output=embed"
                                 class="w-full h-full border-0"
                                 allowfullscreen
                                 loading="lazy">

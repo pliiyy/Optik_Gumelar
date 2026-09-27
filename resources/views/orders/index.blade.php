@@ -46,6 +46,9 @@
                                             @else
                                                 {{ $order->frame?->name ?? 'Frame' }}
                                             @endif
+                                            @if($order->branch_name)
+                                                <span class="mt-1 block text-xs text-slate-500">{{ $order->branch_name }} · {{ number_format($order->branch_distance_km, 2, ',', '.') }} km</span>
+                                            @endif
                                         </td>
                                         <td>{{ $order->quantity }}</td>
                                         <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
