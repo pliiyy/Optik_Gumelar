@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+<<<<<<< HEAD
     <nav class="text-sm text-slate-500 mb-6"><a href="/" class="hover:text-slate-900">Beranda</a><span class="mx-2">/</span><span class="text-slate-900 font-medium">Lensa</span></nav>
     <div class="mb-10 flex items-start justify-between gap-4"><div><h1 class="text-3xl md:text-4xl font-bold text-slate-900">Pilihan Lensa</h1><p class="text-slate-500 mt-2">Daftar lensa yang tersedia di database Optik Gumelar.</p></div>@auth @if(Auth::user()->role === 'PELANGGAN')<a href="{{ route('cart.index') }}" class="btn btn-primary whitespace-nowrap"><i class="bi bi-cart3 me-1"></i> Keranjang</a>@endif @endauth</div>
 
