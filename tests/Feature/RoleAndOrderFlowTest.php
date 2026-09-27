@@ -48,6 +48,79 @@ class RoleAndOrderFlowTest extends TestCase
         $this->actingAs($customer)->get('/orders')->assertStatus(200);
     }
 
+    public function test_customer_can_add_product_without_leaving_product_page(): void
+    {
+        $response = $this->withHeaders(['Accept' => 'application/json'])->post('/keranjang/tambah', [
+            'product_type' => 'frame',
+            'product_key' => 'classic-round-tr90',
+            'quantity' => 1,
+        ]);
+
+        $response->assertOk()->assertJson(['cart_count' => 1]);
+        $this->assertSame(1, collect(session('cart'))->sum('quantity'));
+    }
+
+    public function test_customer_can_checkout_cart_items_as_one_transaction(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $this->withHeaders(['Accept' => 'application/json'])->post('/keranjang/tambah', [
+            'product_type' => 'frame',
+            'product_key' => 'classic-round-tr90',
+            'quantity' => 1,
+        ]);
+        $this->withHeaders(['Accept' => 'application/json'])->post('/keranjang/tambah', [
+            'product_type' => 'accessory',
+            'product_key' => 'hard-case-kacamata',
+            'quantity' => 2,
+        ]);
+
+        $this->actingAs($customer)->get('/checkout')->assertOk();
+        $this->actingAs($customer)->post('/checkout', ['terms' => '1'])->assertRedirect('/orders');
+
+        $orders = Order::where('user_id', $customer->id)->get();
+        $this->assertCount(2, $orders);
+        $this->assertCount(1, $orders->pluck('transaction_code')->unique());
+        $this->assertSame(500000.0, (float) $orders->sum('total_price'));
+        $this->assertSame([], session('cart', []));
+    }
+
+    public function test_customer_can_confirm_direct_purchase_after_accepting_terms(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $this->post('/beli-sekarang', [
+            'product_type' => 'accessory',
+            'product_key' => 'hard-case-kacamata',
+            'quantity' => 2,
+        ])->assertRedirect('/checkout');
+
+        $this->get('/checkout')->assertRedirect('/login');
+
+        $this->actingAs($customer)->post('/beli-sekarang', [
+            'product_type' => 'accessory',
+            'product_key' => 'hard-case-kacamata',
+            'quantity' => 2,
+        ])->assertRedirect('/checkout');
+
+        $this->actingAs($customer)->post('/checkout', [
+            'notes' => 'Konfirmasi di toko',
+        ])->assertSessionHasErrors('terms');
+
+        $this->actingAs($customer)->post('/checkout', [
+            'terms' => '1',
+            'notes' => 'Konfirmasi di toko',
+        ])->assertRedirect('/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'user_id' => $customer->id,
+            'product_type' => 'accessory',
+            'product_key' => 'hard-case-kacamata',
+            'product_name' => 'Hard Case Kacamata',
+            'quantity' => 2,
+        ]);
+    }
+
     public function test_karyawan_can_update_order_status_to_completed(): void
     {
         $customer = User::factory()->create(['role' => 'PELANGGAN']);

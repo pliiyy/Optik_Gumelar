@@ -8,17 +8,17 @@
 
     <!-- 2. Stats Section (Angka Kepercayaan) -->
     <div class="container mx-auto px-6 -mt-12 relative z-20">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50 border border-white">
             <div class="text-center border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0">
-                <h3 class="text-3xl font-bold text-sky-600">10rb+</h3>
+                <h3 class="text-3xl font-bold text-teal-700">10rb+</h3>
                 <p class="text-slate-500 font-medium">Nasabah Aktif</p>
             </div>
             <div class="text-center border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0">
-                <h3 class="text-3xl font-bold text-sky-600">24 Jam</h3>
+                <h3 class="text-3xl font-bold text-teal-700">24 Jam</h3>
                 <p class="text-slate-500 font-medium">Layanan Bantuan</p>
             </div>
             <div class="text-center">
-                <h3 class="text-3xl font-bold text-sky-600">Mudah</h3>
+                <h3 class="text-3xl font-bold text-teal-700">Mudah</h3>
                 <p class="text-slate-500 font-medium">Proses Administrasi</p>
             </div>
         </div>
@@ -28,13 +28,13 @@
     <section class="py-24 container mx-auto px-6">
         <div class="text-center mb-16">
             <h2 class="text-3xl font-bold text-slate-900 mb-4">Layanan Unggulan Kami</h2>
-            <div class="w-20 h-1 bg-sky-600 mx-auto"></div>
+            <div class="w-20 h-1 bg-[#f27d63] mx-auto"></div>
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
             <div class="p-8 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition">
-                <div class="w-12 h-12 bg-sky-100 text-sky-600 rounded-lg flex items-center justify-center mb-6 text-2xl font-bold">
-                    👁️
+                <div class="w-12 h-12 bg-[#e3f3ef] text-teal-700 rounded-xl flex items-center justify-center mb-6 text-2xl font-bold">
+                    <i class="bi bi-eye"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Pemeriksaan Mata</h3>
                 <p class="text-slate-600 text-sm">
@@ -43,8 +43,8 @@
             </div>
             
             <div class="p-8 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition">
-                <div class="w-12 h-12 bg-sky-100 text-sky-600 rounded-lg flex items-center justify-center mb-6 text-2xl font-bold">
-                    👓
+                <div class="w-12 h-12 bg-[#e3f3ef] text-teal-700 rounded-xl flex items-center justify-center mb-6 text-2xl font-bold">
+                    <i class="bi bi-eyeglasses"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Kacamata Resep</h3>
                 <p class="text-slate-600 text-sm">
@@ -120,16 +120,16 @@
         <div class="bg-sky-600 rounded-3xl p-12 text-center text-white overflow-hidden relative">
             <div class="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
 
-            <h2 class="text-3xl md:text-4xl font-bold mb-6 relative z-10">Siap Mengembangkan Bisnis Anda?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 relative z-10">Siap Merawat Penglihatan Anda?</h2>
             <p class="text-sky-100 mb-10 max-w-xl mx-auto relative z-10">
-                Hubungi kami sekarang untuk mendapatkan penawaran terbaik atau solusi teknologi yang tepat sasaran.
+                Konsultasikan kebutuhan mata Anda dan temukan pilihan frame atau lensa yang paling nyaman.
             </p>
             <div class="flex flex-wrap justify-center gap-4 relative z-10">
                 <a class="bg-white text-sky-600 px-8 py-3 rounded-full font-bold hover:bg-slate-100 transition" href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer">
                     Hubungi Kami
                 </a>
-                <a href="/portfolio" class="bg-transparent border border-white px-8 py-3 rounded-full font-bold hover:bg-white/10 transition">
-                    Lihat Portfolio
+                <a href="/produk/frame" class="bg-transparent border border-white px-8 py-3 rounded-full font-bold hover:bg-white/10 transition">
+                    Lihat Produk
                 </a>
             </div>
         </div>

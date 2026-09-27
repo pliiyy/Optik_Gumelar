@@ -21,6 +21,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Transaksi</th>
                                     <th>Pelanggan</th>
                                     <th>Produk</th>
                                     <th>Qty</th>
@@ -36,9 +37,12 @@
                                 @forelse ($orders as $order)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td><span class="font-monospace small">{{ $order->transaction_code ?? 'Manual' }}</span></td>
                                         <td>{{ $order->user->name ?? 'Unknown' }}</td>
                                         <td>
-                                            @if($order->product_type === 'lens')
+                                            @if($order->product_name)
+                                                {{ $order->product_name }}
+                                            @elseif($order->product_type === 'lens')
                                                 {{ $order->lens?->name ?? 'Lensa' }}
                                             @else
                                                 {{ $order->frame?->name ?? 'Frame' }}

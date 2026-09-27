@@ -14,19 +14,26 @@
 <body class="bg-slate-50 min-h-screen flex flex-col">
 
     <!-- NAVBAR -->
-    <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
+        <div class="flex justify-between items-center px-6 lg:px-10 py-4">
         <div>
-            <a href="/" class="text-2xl font-bold tracking-tighter text-slate-900">
-                Optik Gumelar
+            <a href="/" class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-700 text-white shadow-sm"><i class="bi bi-eyeglasses"></i></span>
+                <span>Optik <span class="text-teal-700">Gumelar</span></span>
             </a>
         </div>
 
         <!-- Desktop Menu -->
+<<<<<<< HEAD
         <div class="hidden md:flex space-x-8 items-center">
             @php
                 $cartCount = collect(session('cart', []))->sum('quantity');
             @endphp
             <a href="/" class="text-slate-600 hover:text-slate-900 font-medium transition">Beranda</a>
+=======
+        <div class="hidden md:flex space-x-7 items-center">
+            <a href="/" class="text-slate-600 hover:text-teal-700 font-medium transition">Beranda</a>
+>>>>>>> 2b8faee8b8c69a612160f21999c4fbe6f18f1ec5
 
             <!-- Dropdown: Produk -->
             <div class="relative">
@@ -37,13 +44,14 @@
         </svg>
     </button>
 
-    <div id="produk-dropdown" class="hidden absolute left-0 top-full mt-3 w-40 bg-white border border-slate-200 rounded-lg shadow-lg py-2 z-50">
-        <a href="/produk/frame" class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">Frame</a>
-        <a href="/produk/lensa" class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition">Lensa</a>
+    <div id="produk-dropdown" class="hidden absolute left-0 top-full mt-3 w-44 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
+        <a href="/produk/frame" class="block px-4 py-2 text-sm text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition">Frame</a>
+        <a href="/produk/lensa" class="block px-4 py-2 text-sm text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition">Lensa</a>
+        <a href="/produk/aksesoris" class="block px-4 py-2 text-sm text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition">Aksesoris</a>
     </div>
 </div>
-            </div>
 
+<<<<<<< HEAD
             <a href="/tentang-kami" class="text-slate-600 hover:text-slate-900 font-medium transition">Tentang Kami</a>
             <a href="/kontak" class="text-slate-600 hover:text-slate-900 font-medium transition">Kontak</a>
             <a href="/login" class="text-slate-600 hover:text-slate-900 font-medium transition">Login</a>
@@ -63,17 +71,46 @@
             
             <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-slate-200 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white transition flex gap-2 items-center bg-green-400 text-slate-900 font-medium">
                 <span>Whatsapp</span>
+=======
+            <a href="/tentang-kami" class="text-slate-600 hover:text-teal-700 font-medium transition">Tentang Kami</a>
+            <a href="/kontak" class="text-slate-600 hover:text-teal-700 font-medium transition">Kontak</a>
+            <a href="/login" class="text-slate-600 hover:text-teal-700 font-medium transition">Login</a>
+            <a href="/cabang" class="text-slate-600 hover:text-teal-700 font-medium transition">Cabang</a>
+            <a href="{{ route('cart.index') }}" class="relative text-slate-600 hover:text-teal-700 font-medium transition" aria-label="Keranjang belanja">
+                <i class="bi bi-bag text-lg"></i>
+                <span id="cart-count" class="{{ session('cart') ? '' : 'hidden' }} absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#f27d63] px-1 text-[10px] font-bold text-white">{{ collect(session('cart', []))->sum('quantity') }}</span>
+>>>>>>> 2b8faee8b8c69a612160f21999c4fbe6f18f1ec5
             </a>
+            
+            <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-teal-700 px-4 py-2 rounded-xl hover:bg-teal-800 hover:text-white transition flex gap-2 items-center bg-teal-700 text-white font-medium shadow-sm">
+                <i class="bi bi-whatsapp"></i><span>Whatsapp</span>
+            </a>
+        </div>
+        <button type="button" id="mobile-menu-toggle" class="md:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600" aria-label="Buka menu navigasi" aria-expanded="false">
+            <i class="bi bi-list text-xl"></i>
+        </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden border-t border-slate-100 bg-white px-6 pb-5 pt-3 md:hidden">
+            <div class="grid gap-1 text-sm font-semibold">
+                <a href="/" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Beranda</a>
+                <a href="/produk/frame" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Frame</a>
+                <a href="/produk/lensa" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Lensa</a>
+                <a href="/produk/aksesoris" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Aksesoris</a>
+                <a href="/tentang-kami" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Tentang Kami</a>
+                <a href="/kontak" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Kontak</a>
+                <a href="{{ route('cart.index') }}" class="mt-2 rounded-xl bg-teal-700 px-3 py-2 text-center text-white">Buka Keranjang</a>
+            </div>
         </div>
     </nav>
 
     <!-- CONTENT SECTION -->
-    <main class="flex-grow pt-20">
+    <main class="grow pt-20">
         @yield('content')
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 mt-auto">
+    <footer class="bg-[#132f3d] text-slate-300 pt-16 pb-8 mt-auto">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 <div class="space-y-6">
@@ -116,9 +153,70 @@
         </div>
     </footer>
 <script>
+    document.querySelectorAll('.ajax-cart-form').forEach(function (form) {
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: new FormData(form),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Keranjang gagal diperbarui.');
+                }
+
+                const result = await response.json();
+                const count = document.getElementById('cart-count');
+                count.textContent = result.cart_count;
+                count.classList.remove('hidden');
+                window.showCartMessage(result.message);
+            } catch (error) {
+                window.showCartMessage(error.message, true);
+            } finally {
+                button.disabled = false;
+            }
+        });
+    });
+
+    window.showCartMessage = function (message, isError = false) {
+        let feedback = document.getElementById('cart-feedback');
+        if (!feedback) {
+            feedback = document.createElement('div');
+            feedback.id = 'cart-feedback';
+            feedback.className = 'fixed right-5 top-24 z-[60] rounded-xl px-4 py-3 text-sm font-semibold shadow-lg';
+            document.body.appendChild(feedback);
+        }
+        feedback.textContent = message;
+        feedback.classList.toggle('bg-rose-600', isError);
+        feedback.classList.toggle('bg-teal-700', !isError);
+        feedback.classList.add('text-white');
+        clearTimeout(window.cartMessageTimer);
+        window.cartMessageTimer = setTimeout(function () { feedback.remove(); }, 2500);
+    };
+
     function toggleProdukDropdown() {
         document.getElementById('produk-dropdown').classList.toggle('hidden');
         document.getElementById('produk-chevron').classList.toggle('rotate-180');
+    }
+
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function () {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden', isOpen);
+            mobileMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+            mobileMenuToggle.innerHTML = isOpen ? '<i class="bi bi-list text-xl"></i>' : '<i class="bi bi-x-lg text-lg"></i>';
+        });
     }
 
     document.addEventListener('click', function (e) {

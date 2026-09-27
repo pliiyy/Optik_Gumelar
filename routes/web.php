@@ -34,6 +34,15 @@ Route::get('/produk/lensa', function () {
 
     return view('lensa', compact('lenses'));
 });
+Route::get('/produk/aksesoris', function () {
+    return view('aksesoris');
+});
+
+Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+Route::post('/keranjang/tambah', [CartController::class, 'add'])->name('cart.add');
+Route::post('/beli-sekarang', [CartController::class, 'buyNow'])->name('cart.buyNow');
+Route::patch('/keranjang/{key}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/keranjang/{key}', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -88,6 +97,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware(RoleMiddleware::class . ':PELANGGAN,KARYAWAN,ADMIN')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+        Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
+        Route::post('/checkout', [OrderController::class, 'confirmCheckout'])->name('checkout.confirm');
         Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     });
 

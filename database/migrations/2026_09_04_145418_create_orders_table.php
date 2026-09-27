@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('product_type', ['lens', 'frame']);
-            $table->unsignedBigInteger('product_id');
+            $table->enum('product_type', ['lens', 'frame', 'accessory']);
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('quantity')->default(1);
             $table->text('notes')->nullable();
             $table->enum('status', ['pending', 'selesai', 'batal'])->default('pending');

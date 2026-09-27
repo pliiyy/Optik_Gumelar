@@ -12,28 +12,28 @@
 <body class="bg-slate-50 text-slate-800">
 
     <!-- Slim Navbar -->
-    <nav class="bg-white border-b border-slate-200 fixed top-0 w-full z-50 h-14 flex items-center justify-between px-6 shadow-sm">
+    <nav class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 fixed top-0 w-full z-50 h-16 flex items-center justify-between px-5 md:px-8 shadow-sm">
         <div class="flex items-center gap-4">
-            <a href="/" class="no-underline"><span class="font-bold text-blue-600 text-lg">Optik Gumelar</span></a>
-            <span class="text-slate-300">|</span>
-            <span class="text-xs text-slate-500 font-medium">ADMIN DASHBOARD</span>
+            <a href="/" class="no-underline flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-700 text-white"><i class="bi bi-eyeglasses"></i></span><span class="font-bold text-slate-900 text-lg">Optik <span class="text-teal-700">Gumelar</span></span></a>
+            <span class="hidden sm:inline text-slate-300">/</span>
+            <span class="hidden sm:inline rounded-full bg-[#e3f3ef] px-3 py-1 text-[10px] text-teal-700 font-bold tracking-widest">RUANG KERJA</span>
         </div>
         
         <div class="flex items-center gap-4">
-            <a href="{{ route('logout') }}" class="text-xs font-semibold text-slate-500 hover:text-blue-600 transition">
+            <a href="{{ route('logout') }}" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-[#e3f3ef] hover:text-teal-700 transition">
                 <i class="bi bi-logout mr-1"></i> Logout
             </a>
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
-                AD
+            <div class="w-9 h-9 rounded-xl bg-[#dff4ef] flex items-center justify-center text-teal-800 font-bold text-xs">
+                {{ strtoupper(substr(Auth::user()->name ?? 'AD', 0, 2)) }}
             </div>
         </div>
     </nav>
 
     <!-- Main Wrapper -->
-    <div class="flex pt-14 h-screen">
+    <div class="flex pt-16 min-h-screen">
 
         <!-- Sidebar -->
-        <aside class="w-56 bg-slate-900 text-slate-300 p-4 space-y-8">
+        <aside class="w-60 shrink-0 bg-[#132f3d] text-slate-300 p-4 space-y-8">
             <div class="space-y-1">
                 <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Menu</p>
                 
@@ -56,7 +56,7 @@
                 @endphp
 
                 @foreach($menu as $item)
-                    <a href="{{ $item['url'] }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition hover:bg-blue-600 hover:text-white {{ request()->is(ltrim($item['url'], '/')) ? 'bg-blue-600 text-white' : '' }}">
+                    <a href="{{ $item['url'] }}" class="flex items-center gap-3 px-3 py-3 rounded-xl text-sm transition hover:bg-teal-700 hover:text-white {{ request()->is(ltrim($item['url'], '/')) ? 'bg-teal-700 text-white shadow-lg shadow-teal-950/20' : '' }}">
                         <i class="bi {{ $item['icon'] }}"></i> {{ $item['label'] }}
                     </a>
                 @endforeach
@@ -64,11 +64,11 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto p-4">
-            <div class=" mx-auto">
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="max-w-7xl mx-auto">
 
                 <!-- Main Card -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 md:p-8">
                     @yield('content')
                 </div>
 

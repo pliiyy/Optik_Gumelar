@@ -1,9 +1,10 @@
 @extends('layouts.landlayout')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+<div class="min-h-[calc(100vh-5rem)] flex items-center justify-center bg-[radial-gradient(circle_at_top_right,_#e3f3ef,_transparent_40%)] py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-slate-200">
         <div class="text-center">
+            <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-700 text-2xl text-white shadow-lg shadow-teal-900/15"><i class="bi bi-eyeglasses"></i></div>
             <h2 class="text-3xl font-bold text-slate-900 tracking-tighter">Login</h2>
             <p class="mt-2 text-sm text-slate-600">Masuk ke akun Optik Gumelar Anda</p>
         </div>
@@ -38,7 +39,7 @@
 
             <div>
                 <button type="submit" 
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition">
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-teal-700 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition">
                     Masuk
                 </button>
             </div>
