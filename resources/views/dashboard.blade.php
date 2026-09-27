@@ -29,6 +29,10 @@
             @endif
         </p>
     </div>
+    <a href="/" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/40 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-800">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Kembali ke Beranda</span>
+    </a>
 </div>
 
 @if($role === 'ADMIN')

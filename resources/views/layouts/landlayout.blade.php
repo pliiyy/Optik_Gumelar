@@ -45,7 +45,11 @@
 
             <a href="/tentang-kami" class="text-slate-600 hover:text-teal-700 font-medium transition">Tentang Kami</a>
             <a href="/kontak" class="text-slate-600 hover:text-teal-700 font-medium transition">Kontak</a>
+            @auth
+            <a href="/dashboard" class="text-slate-600 hover:text-teal-700 font-medium transition">Dashboard</a>
+            @else
             <a href="/login" class="text-slate-600 hover:text-teal-700 font-medium transition">Login</a>
+            @endauth
             <a href="/cabang" class="text-slate-600 hover:text-teal-700 font-medium transition">Cabang</a>
             <a href="{{ route('cart.index') }}" class="relative text-slate-600 hover:text-teal-700 font-medium transition" aria-label="Keranjang belanja">
                 <i class="bi bi-bag text-lg"></i>
@@ -69,6 +73,11 @@
                 <a href="/produk/aksesoris" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Aksesoris</a>
                 <a href="/tentang-kami" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Tentang Kami</a>
                 <a href="/kontak" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Kontak</a>
+                @auth
+                <a href="/dashboard" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Dashboard</a>
+                @else
+                <a href="/login" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Login</a>
+                @endauth
                 <a href="{{ route('cart.index') }}" class="mt-2 rounded-xl bg-teal-700 px-3 py-2 text-center text-white">Buka Keranjang</a>
             </div>
         </div>
@@ -95,7 +104,11 @@
                         <li><a href="/" class="hover:text-sky-400 transition">Beranda</a></li>
                         <li><a href="/tentang-kami" class="hover:text-sky-400 transition">Tentang Kami</a></li>
                         <li><a href="/kontak" class="hover:text-sky-400 transition">Kontak</a></li>
+                        @auth
+                        <li><a href="/dashboard" class="hover:text-sky-400 transition">Dashboard</a></li>
+                        @else
                         <li><a href="/login" class="hover:text-sky-400 transition">Login</a></li>
+                        @endauth
                         <li><a href="/cabang" class="hover:text-sky-400 transition">Cabang</a></li>
                     </ul>
                 </div>

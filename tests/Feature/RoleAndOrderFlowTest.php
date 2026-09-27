@@ -13,6 +13,26 @@ class RoleAndOrderFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_public_navigation_shows_login_or_dashboard_based_on_authentication(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('href="/login"', false)
+            ->assertDontSee('href="/dashboard"', false);
+
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $this->actingAs($customer)->get('/')
+            ->assertOk()
+            ->assertSee('href="/dashboard"', false)
+            ->assertDontSee('href="/login"', false);
+
+        $this->actingAs($customer)->get('/dashboard')
+            ->assertOk()
+            ->assertSee('href="/"', false)
+            ->assertSee('Kembali ke Beranda');
+    }
+
     public function test_customer_can_create_order_and_view_own_orders(): void
     {
         $customer = User::factory()->create([
