@@ -25,6 +25,7 @@
                                     <th>Produk</th>
                                     <th>Qty</th>
                                     <th>Total</th>
+                                    <th>Rencana Datang</th>
                                     <th>Status</th>
                                     @if(Auth::user()->role !== 'PELANGGAN')
                                         <th class="text-center">Aksi</th>
@@ -45,6 +46,7 @@
                                         </td>
                                         <td>{{ $order->quantity }}</td>
                                         <td>Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                                        <td>{{ $order->planned_visit_date ? \Illuminate\Support\Carbon::parse($order->planned_visit_date)->format('d-m-Y') : '-' }}</td>
                                         <td>
                                             <span class="badge bg-{{ $order->status === 'selesai' ? 'success' : ($order->status === 'batal' ? 'danger' : 'warning') }} text-white">
                                                 {{ strtoupper($order->status) }}
@@ -66,7 +68,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center py-4 text-muted">Belum ada data pesanan.</td>
+                                        <td colspan="8" class="text-center py-4 text-muted">Belum ada data pesanan.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

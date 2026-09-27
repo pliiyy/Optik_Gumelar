@@ -14,6 +14,7 @@ class Order extends Model
         'product_type',
         'product_id',
         'quantity',
+        'planned_visit_date',
         'notes',
         'status',
         'total_price',

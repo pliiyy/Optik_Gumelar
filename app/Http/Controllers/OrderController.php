@@ -29,11 +29,18 @@ class OrderController extends Controller
             'product_type' => 'required|in:lens,frame',
             'product_id' => 'required|integer',
             'quantity' => 'required|integer|min:1',
+            'planned_visit_date' => 'required|date|after_or_equal:today',
             'notes' => 'nullable|string|max:500',
         ]);
 
         $modelClass = $request->product_type === 'lens' ? Lens::class : Frame::class;
         $product = $modelClass::findOrFail($request->product_id);
+
+        if ($product->stock < $request->quantity) {
+            return back()->withErrors([
+                'quantity' => 'Jumlah pesanan melebihi stok yang tersedia.',
+            ])->withInput();
+        }
 
         $totalPrice = $product->price * $request->quantity;
 
@@ -42,6 +49,7 @@ class OrderController extends Controller
             'product_type' => $request->product_type,
             'product_id' => $product->id,
             'quantity' => $request->quantity,
+            'planned_visit_date' => $request->planned_visit_date,
             'notes' => $request->notes ?: 'Harus datang ke toko untuk konfirmasi pesanan.',
             'status' => 'pending',
             'total_price' => $totalPrice,

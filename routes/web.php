@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrameController;
 use App\Http\Controllers\LensController;
 use App\Http\Controllers\OrderController;
@@ -24,10 +25,14 @@ Route::get('/cabang', function () {
     return view('cabang');
 });
 Route::get('/produk/frame', function () {
-    return view('frame');
+    $frames = Frame::latest()->get();
+
+    return view('frame', compact('frames'));
 });
 Route::get('/produk/lensa', function () {
-    return view('lensa');
+    $lenses = Lens::latest()->get();
+
+    return view('lensa', compact('lenses'));
 });
 
 Route::middleware('guest')->group(function () {
@@ -84,5 +89,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
         Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    });
+
+    Route::middleware(RoleMiddleware::class . ':PELANGGAN')->group(function () {
+        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+        Route::post('/cart', [CartController::class, 'add'])->name('cart.add');
+        Route::patch('/cart/{key}', [CartController::class, 'update'])->name('cart.update');
+        Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('cart.remove');
+        Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     });
 });

@@ -23,6 +23,9 @@
 
         <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-8 items-center">
+            @php
+                $cartCount = collect(session('cart', []))->sum('quantity');
+            @endphp
             <a href="/" class="text-slate-600 hover:text-slate-900 font-medium transition">Beranda</a>
 
             <!-- Dropdown: Produk -->
@@ -45,6 +48,18 @@
             <a href="/kontak" class="text-slate-600 hover:text-slate-900 font-medium transition">Kontak</a>
             <a href="/login" class="text-slate-600 hover:text-slate-900 font-medium transition">Login</a>
             <a href="/cabang" class="text-slate-600 hover:text-slate-900 font-medium transition">Cabang</a>
+
+            @auth
+                @if(Auth::user()->role === 'PELANGGAN')
+                    <a href="{{ route('cart.index') }}" class="relative text-slate-600 hover:text-slate-900 font-medium transition flex items-center gap-2" aria-label="Keranjang">
+                        <i class="bi bi-cart3 text-lg"></i>
+                        <span>Keranjang</span>
+                        @if($cartCount > 0)
+                            <span class="absolute -top-3 -right-3 min-w-5 h-5 px-1 rounded-full bg-sky-600 text-white text-[10px] leading-5 text-center">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+                @endif
+            @endauth
             
             <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-slate-200 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white transition flex gap-2 items-center bg-green-400 text-slate-900 font-medium">
                 <span>Whatsapp</span>
@@ -115,5 +130,6 @@
         }
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

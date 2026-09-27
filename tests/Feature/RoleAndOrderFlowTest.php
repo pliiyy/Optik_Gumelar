@@ -32,6 +32,7 @@ class RoleAndOrderFlowTest extends TestCase
             'product_type' => 'lens',
             'product_id' => $lens->id,
             'quantity' => 2,
+            'planned_visit_date' => now()->addDay()->toDateString(),
             'notes' => 'Butuh untuk kerja',
         ]);
 
@@ -41,6 +42,7 @@ class RoleAndOrderFlowTest extends TestCase
             'product_type' => 'lens',
             'product_id' => $lens->id,
             'status' => 'pending',
+            'planned_visit_date' => now()->addDay()->toDateString(),
         ]);
 
         $this->actingAs($customer)->get('/orders')->assertStatus(200);
@@ -97,6 +99,66 @@ class RoleAndOrderFlowTest extends TestCase
             'name' => 'Pelanggan Baru',
             'email' => 'baru@example.com',
             'role' => 'PELANGGAN',
+        ]);
+    }
+
+    public function test_customer_can_add_product_to_cart_and_checkout_with_visit_date(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $lens = Lens::create([
+            'name' => 'Lensa Keranjang',
+            'category' => 'Premium',
+            'description' => 'Lensa untuk keranjang',
+            'price' => 200000,
+            'stock' => 5,
+        ]);
+
+        $this->actingAs($customer)->post('/cart', [
+            'product_type' => 'lens',
+            'product_id' => $lens->id,
+            'quantity' => 2,
+        ])->assertRedirect();
+
+        $this->actingAs($customer)->post('/cart/checkout', [
+            'planned_visit_date' => now()->addDay()->toDateString(),
+            'notes' => 'Datang sore hari',
+        ])->assertRedirect('/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'user_id' => $customer->id,
+            'product_id' => $lens->id,
+            'quantity' => 2,
+            'status' => 'pending',
+            'notes' => 'Datang sore hari',
+        ]);
+        $this->assertDatabaseCount('orders', 1);
+    }
+
+    public function test_customer_can_submit_direct_order_from_product_page(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $frame = Frame::create([
+            'name' => 'Frame Direct',
+            'category' => 'Premium',
+            'description' => 'Frame direct order',
+            'price' => 350000,
+            'stock' => 3,
+        ]);
+
+        $this->actingAs($customer)->post('/orders', [
+            'product_type' => 'frame',
+            'product_id' => $frame->id,
+            'quantity' => 1,
+            'planned_visit_date' => now()->addDays(2)->toDateString(),
+            'notes' => 'Pesan langsung',
+        ])->assertRedirect('/orders');
+
+        $this->assertDatabaseHas('orders', [
+            'user_id' => $customer->id,
+            'product_type' => 'frame',
+            'product_id' => $frame->id,
+            'status' => 'pending',
+            'notes' => 'Pesan langsung',
         ]);
     }
 }
