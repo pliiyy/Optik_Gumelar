@@ -73,6 +73,16 @@
                                     </svg>
                                     <span>{{ $branch['phone'] }}</span>
                                 </div>
+
+                                <a
+                                    href="https://wa.me/{{ preg_replace('/\D+/', '', $branch['phone']) }}?text={{ urlencode('Halo, saya ingin bertanya tentang cabang ' . $branch['name'] . '.') }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2 font-semibold text-white transition hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                >
+                                    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                                    <span>Chat WhatsApp</span>
+                                </a>
  
                                 <div class="flex items-center gap-3 text-slate-700">
                                     {{-- Map pin icon --}}

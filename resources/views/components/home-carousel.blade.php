@@ -1,16 +1,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <section class="relative w-full overflow-hidden px-4 py-4 sm:px-6 lg:px-10">
-    <div class="swiper myHomeSwiper mx-auto h-[min(70vh,640px)] min-h-[420px] w-full max-w-7xl overflow-hidden rounded-2xl shadow-xl">
+    <div class="swiper myHomeSwiper mx-auto h-[min(70vh,640px)] min-h-[420px] w-full max-w-7xl overflow-hidden rounded-[1.75rem] shadow-xl">
         <div class="swiper-wrapper">
             
             <!-- Slide 1 -->
             <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
                 <img src="{{ asset('carousel3.png') }}" alt="Pemeriksaan Mata Profesional" class="absolute inset-0 h-full w-full object-cover" loading="eager">
-                <div class="absolute inset-0 bg-slate-900/40"></div>
-                <div class="relative z-10 text-center text-white px-4">
+                <div class="absolute inset-0 bg-[#17324d]/45"></div>
+                <div class="relative z-10 max-w-3xl text-center text-white px-4">
+                    <span class="mb-4 inline-block rounded-full bg-white/15 px-4 py-2 text-xs font-bold uppercase tracking-[.2em] backdrop-blur-sm">Penglihatan lebih nyaman</span>
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Pemeriksaan Mata Profesional</h1>
                     <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 drop-shadow-md">Dapatkan resep tepat dan layanan optik lengkap untuk penglihatan yang lebih nyaman.</p>
+                    <a href="/kontak" class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#132f3d] shadow-lg hover:bg-[#e3f3ef]"><i class="bi bi-calendar2-check"></i> Jadwalkan Pemeriksaan</a>
                 </div>
             </div>
 
@@ -21,6 +23,7 @@
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Frame Stylish</h1>
                     <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 drop-shadow-md">Pilih dari koleksi frame modern dan klasik yang sesuai gaya Anda.</p>
+                    <a href="/produk/frame" class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#132f3d] shadow-lg hover:bg-[#e3f3ef]"><i class="bi bi-eyeglasses"></i> Lihat Koleksi Frame</a>
                 </div>
             </div>
 
@@ -31,6 +34,7 @@
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Lensa Berkualitas</h1>
                     <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 drop-shadow-md">Lensa anti-silau dan pelindung UV untuk kenyamanan penglihatan seharian.</p>
+                    <a href="/produk/lensa" class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#132f3d] shadow-lg hover:bg-[#e3f3ef]"><i class="bi bi-circle"></i> Pilih Lensa</a>
                 </div>
             </div>
 
@@ -41,6 +45,7 @@
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Servis Kacamata & Perawatan</h1>
                     <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 drop-shadow-md">Perawatan lensa dan servis frame yang membuat kacamata Anda selalu prima.</p>
+                    <a href="/kontak" class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#132f3d] shadow-lg hover:bg-[#e3f3ef]"><i class="bi bi-tools"></i> Konsultasikan</a>
                 </div>
             </div>
 

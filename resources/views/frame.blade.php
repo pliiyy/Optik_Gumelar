@@ -24,12 +24,12 @@
 
     @php
         $frames = [
-            ['nama' => 'Classic Round TR90', 'kategori' => 'Pria', 'bahan' => 'TR90 Ringan', 'harga' => 'Rp 350.000'],
-            ['nama' => 'Cat Eye Acetate', 'kategori' => 'Wanita', 'bahan' => 'Acetate Premium', 'harga' => 'Rp 420.000'],
-            ['nama' => 'Kids Flexible Frame', 'kategori' => 'Anak', 'bahan' => 'Silicone Fleksibel', 'harga' => 'Rp 275.000'],
-            ['nama' => 'Titanium Rimless', 'kategori' => 'Pria', 'bahan' => 'Titanium', 'harga' => 'Rp 650.000'],
-            ['nama' => 'Vintage Square Metal', 'kategori' => 'Wanita', 'bahan' => 'Stainless Metal', 'harga' => 'Rp 390.000'],
-            ['nama' => 'Reading Glasses Basic', 'kategori' => 'Kacamata Baca', 'bahan' => 'Plastik Ringan', 'harga' => 'Rp 180.000'],
+            ['id' => 'classic-round-tr90', 'nama' => 'Classic Round TR90', 'kategori' => 'Pria', 'bahan' => 'TR90 Ringan', 'harga' => 350000],
+            ['id' => 'cat-eye-acetate', 'nama' => 'Cat Eye Acetate', 'kategori' => 'Wanita', 'bahan' => 'Acetate Premium', 'harga' => 420000],
+            ['id' => 'kids-flexible-frame', 'nama' => 'Kids Flexible Frame', 'kategori' => 'Anak', 'bahan' => 'Silicone Fleksibel', 'harga' => 275000],
+            ['id' => 'titanium-rimless', 'nama' => 'Titanium Rimless', 'kategori' => 'Pria', 'bahan' => 'Titanium', 'harga' => 650000],
+            ['id' => 'vintage-square-metal', 'nama' => 'Vintage Square Metal', 'kategori' => 'Wanita', 'bahan' => 'Stainless Metal', 'harga' => 390000],
+            ['id' => 'reading-glasses-basic', 'nama' => 'Reading Glasses Basic', 'kategori' => 'Kacamata Baca', 'bahan' => 'Plastik Ringan', 'harga' => 180000],
         ];
     @endphp
 
@@ -47,9 +47,24 @@
                 <span class="text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded-full">{{ $frame['kategori'] }}</span>
                 <h3 class="font-semibold text-slate-900 mt-3">{{ $frame['nama'] }}</h3>
                 <p class="text-sm text-slate-500 mt-1">{{ $frame['bahan'] }}</p>
-                <div class="flex items-center justify-between mt-4">
-                    <span class="font-bold text-slate-900">{{ $frame['harga'] }}</span>
-                    <a href="https://wa.me/6281313293991?text=Halo,%20saya%20ingin%20tanya%20tentang%20frame%20{{ urlencode($frame['nama']) }}" target="_blank" class="text-sm font-medium text-white bg-green-400 hover:bg-green-500 px-3 py-1.5 rounded-lg transition">Tanya</a>
+                <div class="mt-4 flex flex-col gap-3">
+                    <span class="font-bold text-slate-900">Rp {{ number_format($frame['harga'], 0, ',', '.') }}</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-cart-form">
+                            @csrf
+                            <input type="hidden" name="product_type" value="frame">
+                            <input type="hidden" name="product_key" value="{{ $frame['id'] }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-teal-700 px-3 py-2 text-xs font-bold text-teal-700 hover:bg-teal-50"><i class="bi bi-bag-plus"></i> Keranjang</button>
+                        </form>
+                        <form action="{{ route('cart.buyNow') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_type" value="frame">
+                            <input type="hidden" name="product_key" value="{{ $frame['id'] }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-700 px-3 py-2 text-xs font-bold text-white hover:bg-teal-800"><i class="bi bi-lightning-charge"></i> Beli Sekarang</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

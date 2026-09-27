@@ -8,7 +8,7 @@
     $nama = Auth::user()->name ?? 'Pengguna';
 @endphp
 
-<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-linear-to-r from-blue-600 to-indigo-600 p-4 rounded-2xl text-white shadow-sm">
+<div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-linear-to-r from-[#075766] to-[#087f8c] p-5 rounded-2xl text-white shadow-lg shadow-teal-900/10">
     <div>
         <h1 class="text-2xl font-bold">
             @if($role === 'ADMIN')
@@ -19,7 +19,7 @@
                 Selamat Datang, {{ $nama }}! 👋
             @endif
         </h1>
-        <p class="text-blue-100 text-sm mt-1">
+        <p class="text-teal-100 text-sm mt-1">
             @if($role === 'ADMIN')
                 Ringkasan operasional Optik Gumelar secara lengkap.
             @elseif($role === 'KARYAWAN')

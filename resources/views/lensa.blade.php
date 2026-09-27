@@ -23,14 +23,14 @@
 
     @php
         $lensa = [
-            ['nama' => 'Single Vision Standard', 'kategori' => 'Lensa Resep', 'fitur' => 'Minus/Plus hingga -6.00 / +4.00', 'harga' => 'Rp 150.000'],
-            ['nama' => 'Anti Radiasi Blue Light', 'kategori' => 'Lensa Resep', 'fitur' => 'Filter cahaya biru layar', 'harga' => 'Rp 275.000'],
-            ['nama' => 'Photochromic (Transisi)', 'kategori' => 'Lensa Resep', 'fitur' => 'Berubah gelap otomatis di luar ruangan', 'harga' => 'Rp 550.000'],
-            ['nama' => 'Progressive Multifocal', 'kategori' => 'Lensa Resep', 'fitur' => 'Jarak dekat & jauh dalam satu lensa', 'harga' => 'Rp 850.000'],
-            ['nama' => 'Soft Contact Lens Bening', 'kategori' => 'Lensa Kontak', 'fitur' => 'Pemakaian harian, daya tahan 3 bulan', 'harga' => 'Rp 120.000'],
-            ['nama' => 'Contact Lens Silicone Hydrogel', 'kategori' => 'Lensa Kontak', 'fitur' => 'Oksigen tinggi, nyaman seharian', 'harga' => 'Rp 210.000'],
-            ['nama' => 'Lapisan Anti Gores', 'kategori' => 'Lensa Tambahan', 'fitur' => 'Coating tambahan untuk semua jenis lensa', 'harga' => 'Rp 50.000'],
-            ['nama' => 'Lapisan Anti Air & Minyak', 'kategori' => 'Lensa Tambahan', 'fitur' => 'Mudah dibersihkan, tahan noda', 'harga' => 'Rp 75.000'],
+            ['id' => 'single-vision-standard', 'nama' => 'Single Vision Standard', 'kategori' => 'Lensa Resep', 'fitur' => 'Minus/Plus hingga -6.00 / +4.00', 'harga' => 150000],
+            ['id' => 'anti-radiasi-blue-light', 'nama' => 'Anti Radiasi Blue Light', 'kategori' => 'Lensa Resep', 'fitur' => 'Filter cahaya biru layar', 'harga' => 275000],
+            ['id' => 'photochromic-transisi', 'nama' => 'Photochromic (Transisi)', 'kategori' => 'Lensa Resep', 'fitur' => 'Berubah gelap otomatis di luar ruangan', 'harga' => 550000],
+            ['id' => 'progressive-multifocal', 'nama' => 'Progressive Multifocal', 'kategori' => 'Lensa Resep', 'fitur' => 'Jarak dekat & jauh dalam satu lensa', 'harga' => 850000],
+            ['id' => 'soft-contact-lens-bening', 'nama' => 'Soft Contact Lens Bening', 'kategori' => 'Lensa Kontak', 'fitur' => 'Pemakaian harian, daya tahan 3 bulan', 'harga' => 120000],
+            ['id' => 'contact-lens-silicone-hydrogel', 'nama' => 'Contact Lens Silicone Hydrogel', 'kategori' => 'Lensa Kontak', 'fitur' => 'Oksigen tinggi, nyaman seharian', 'harga' => 210000],
+            ['id' => 'lapisan-anti-gores', 'nama' => 'Lapisan Anti Gores', 'kategori' => 'Lensa Tambahan', 'fitur' => 'Coating tambahan untuk semua jenis lensa', 'harga' => 50000],
+            ['id' => 'lapisan-anti-air-minyak', 'nama' => 'Lapisan Anti Air & Minyak', 'kategori' => 'Lensa Tambahan', 'fitur' => 'Mudah dibersihkan, tahan noda', 'harga' => 75000],
         ];
     @endphp
 
@@ -47,9 +47,24 @@
                 <span class="text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded-full">{{ $item['kategori'] }}</span>
                 <h3 class="font-semibold text-slate-900 mt-3">{{ $item['nama'] }}</h3>
                 <p class="text-sm text-slate-500 mt-1">{{ $item['fitur'] }}</p>
-                <div class="flex items-center justify-between mt-4">
-                    <span class="font-bold text-slate-900">{{ $item['harga'] }}</span>
-                    <a href="https://wa.me/6281313293991?text=Halo,%20saya%20ingin%20tanya%20tentang%20{{ urlencode($item['nama']) }}" target="_blank" class="text-sm font-medium text-white bg-green-400 hover:bg-green-500 px-3 py-1.5 rounded-lg transition">Tanya</a>
+                <div class="mt-4 flex flex-col gap-3">
+                    <span class="font-bold text-slate-900">Rp {{ number_format($item['harga'], 0, ',', '.') }}</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <form action="{{ route('cart.add') }}" method="POST" class="ajax-cart-form">
+                            @csrf
+                            <input type="hidden" name="product_type" value="lens">
+                            <input type="hidden" name="product_key" value="{{ $item['id'] }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-teal-700 px-3 py-2 text-xs font-bold text-teal-700 hover:bg-teal-50"><i class="bi bi-bag-plus"></i> Keranjang</button>
+                        </form>
+                        <form action="{{ route('cart.buyNow') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_type" value="lens">
+                            <input type="hidden" name="product_key" value="{{ $item['id'] }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-teal-700 px-3 py-2 text-xs font-bold text-white hover:bg-teal-800"><i class="bi bi-lightning-charge"></i> Beli Sekarang</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
