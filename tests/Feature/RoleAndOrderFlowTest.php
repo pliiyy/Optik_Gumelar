@@ -8,6 +8,8 @@ use App\Models\Lens;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\User as GoogleUser;
 use Tests\TestCase;
 
 class RoleAndOrderFlowTest extends TestCase
@@ -66,7 +68,69 @@ class RoleAndOrderFlowTest extends TestCase
             'planned_visit_date' => now()->addDay()->toDateString(),
         ]);
 
-        $this->actingAs($customer)->get('/orders')->assertStatus(200);
+        $this->actingAs($customer)->get('/orders')
+            ->assertStatus(200)
+            ->assertSee(route('orders.invoice', Order::where('user_id', $customer->id)->first()), false)
+            ->assertSee('Cetak Faktur');
+    }
+
+    public function test_customer_can_print_all_items_in_their_transaction_invoice(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $firstOrder = Order::create([
+            'user_id' => $customer->id,
+            'product_type' => 'lens',
+            'product_name' => 'Lensa Progresif',
+            'product_category' => 'Lensa',
+            'transaction_code' => 'TRX-INVOICE-001',
+            'branch_id' => 'ciburaleng',
+            'branch_name' => 'Optik Gumelar Ciburaleng',
+            'quantity' => 1,
+            'status' => 'pending',
+            'total_price' => 250000,
+        ]);
+
+        Order::create([
+            'user_id' => $customer->id,
+            'product_type' => 'frame',
+            'product_name' => 'Frame Titanium',
+            'product_category' => 'Frame Pria',
+            'transaction_code' => 'TRX-INVOICE-001',
+            'branch_id' => 'ciburaleng',
+            'branch_name' => 'Optik Gumelar Ciburaleng',
+            'quantity' => 2,
+            'status' => 'pending',
+            'total_price' => 700000,
+        ]);
+
+        $this->actingAs($customer)
+            ->get(route('orders.invoice', $firstOrder))
+            ->assertOk()
+            ->assertSee('Lensa Progresif')
+            ->assertSee('Frame Titanium')
+            ->assertSee('TRX-INVOICE-001')
+            ->assertSee('950.000')
+            ->assertSee('window.print()');
+    }
+
+    public function test_customer_cannot_print_another_customers_invoice(): void
+    {
+        $owner = User::factory()->create(['role' => 'PELANGGAN']);
+        $otherCustomer = User::factory()->create(['role' => 'PELANGGAN']);
+        $order = Order::create([
+            'user_id' => $owner->id,
+            'product_type' => 'accessory',
+            'product_name' => 'Kain Lap',
+            'transaction_code' => 'TRX-PRIVATE-001',
+            'quantity' => 1,
+            'status' => 'pending',
+            'total_price' => 15000,
+        ]);
+
+        $this->actingAs($otherCustomer)
+            ->get(route('orders.invoice', $order))
+            ->assertForbidden();
     }
 
     public function test_customer_can_add_product_without_leaving_product_page(): void
@@ -212,6 +276,113 @@ class RoleAndOrderFlowTest extends TestCase
             'email' => 'baru@example.com',
             'role' => 'PELANGGAN',
         ]);
+    }
+
+    public function test_google_login_creates_new_account_as_customer(): void
+    {
+        config([
+            'services.google.client_id' => 'client-id',
+            'services.google.client_secret' => 'client-secret',
+            'services.google.redirect' => 'http://localhost/auth/google/callback',
+        ]);
+
+        $googleUser = GoogleUser::fake([
+            'id' => 'google-user-123',
+            'name' => 'Google Customer',
+            'email' => 'google@example.com',
+            'verified_email' => true,
+        ]);
+
+        Socialite::fake('google', $googleUser);
+
+        $this->get('/auth/google/callback')->assertRedirect('/dashboard');
+
+        $user = User::where('email', 'google@example.com')->firstOrFail();
+        $this->assertSame('google-user-123', $user->google_id);
+        $this->assertSame('PELANGGAN', $user->role);
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_google_login_links_existing_user_without_changing_role(): void
+    {
+        config([
+            'services.google.client_id' => 'client-id',
+            'services.google.client_secret' => 'client-secret',
+            'services.google.redirect' => 'http://localhost/auth/google/callback',
+        ]);
+
+        $employee = User::factory()->create([
+            'email' => 'staff@example.com',
+            'role' => 'KARYAWAN',
+        ]);
+        $googleUser = GoogleUser::fake([
+            'id' => 'google-staff-123',
+            'email' => 'staff@example.com',
+            'verified_email' => true,
+        ]);
+        Socialite::fake('google', $googleUser);
+
+        $this->get('/auth/google/callback')->assertRedirect('/dashboard');
+
+        $this->assertAuthenticatedAs($employee);
+        $this->assertDatabaseHas('users', [
+            'id' => $employee->id,
+            'google_id' => 'google-staff-123',
+            'role' => 'KARYAWAN',
+        ]);
+    }
+
+    public function test_google_login_rejects_unverified_email(): void
+    {
+        config([
+            'services.google.client_id' => 'client-id',
+            'services.google.client_secret' => 'client-secret',
+            'services.google.redirect' => 'http://localhost/auth/google/callback',
+        ]);
+
+        $googleUser = GoogleUser::fake([
+            'id' => 'unverified-google-user',
+            'email' => 'unverified@example.com',
+            'verified_email' => false,
+        ]);
+        Socialite::fake('google', $googleUser);
+
+        $this->get('/auth/google/callback')
+            ->assertRedirect('/login')
+            ->assertSessionHasErrors('google');
+
+        $this->assertDatabaseMissing('users', ['email' => 'unverified@example.com']);
+        $this->assertGuest();
+    }
+
+    public function test_login_page_has_google_login_button_and_incomplete_configuration_is_reported(): void
+    {
+        config([
+            'services.google.client_id' => null,
+            'services.google.client_secret' => null,
+            'services.google.redirect' => null,
+        ]);
+
+        $this->get('/login')
+            ->assertOk()
+            ->assertSee('Masuk dengan Google');
+
+        $this->get('/auth/google/redirect')
+            ->assertRedirect('/login')
+            ->assertSessionHasErrors('google');
+    }
+
+    public function test_google_login_redirects_to_provider_when_configured(): void
+    {
+        config([
+            'services.google.client_id' => 'client-id',
+            'services.google.client_secret' => 'client-secret',
+            'services.google.redirect' => 'http://localhost/auth/google/callback',
+        ]);
+        Socialite::fake('google', GoogleUser::fake());
+
+        $this->get('/auth/google/redirect')
+            ->assertRedirect('https://socialite.fake/google/authorize');
     }
 
     public function test_checkout_creates_catalog_record_for_products_that_are_not_in_database(): void

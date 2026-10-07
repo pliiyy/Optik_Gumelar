@@ -29,6 +29,13 @@
         <button class="auth-submit" type="submit">Masuk</button>
     </form>
 
+    <div class="auth-divider"><span>atau masuk dengan</span></div>
+
+    <a class="auth-google-button" href="{{ route('auth.google.redirect') }}">
+        <i class="bi bi-google" aria-hidden="true"></i>
+        <span>Masuk dengan Google</span>
+    </a>
+
     @if ($errors->any())
         <div class="auth-alert auth-alert-error" role="alert">
             @foreach ($errors->all() as $error)

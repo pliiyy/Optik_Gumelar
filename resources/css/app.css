@@ -458,7 +458,46 @@ main > *, main .max-w-7xl > * {
     background: #d73211;
 }
 
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: #999;
+    font-size: 12px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    flex: 1;
+    height: 1px;
+    background: #eee;
+    content: "";
+}
+
+.auth-google-button {
+    display: flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #d8d8d8;
+    border-radius: 5px;
+    color: #444;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-google-button:hover {
+    border-color: #aaa;
+    background: #fafafa;
+    color: #222;
+}
+
 .auth-submit:focus-visible,
+.auth-google-button:focus-visible,
 .auth-topline a:focus-visible,
 .auth-switch a:focus-visible {
     outline: 3px solid rgba(238, 77, 45, .35);

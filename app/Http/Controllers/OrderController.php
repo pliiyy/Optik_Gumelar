@@ -27,6 +27,31 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
+    public function invoice(Order $order)
+    {
+        $user = Auth::user();
+
+        abort_unless($user->role !== 'PELANGGAN' || $order->user_id === $user->id, 403);
+
+        $orders = $order->transaction_code
+            ? Order::where('transaction_code', $order->transaction_code)
+                ->where('user_id', $order->user_id)
+                ->with('user')
+                ->orderBy('id')
+                ->get()
+            : Order::whereKey($order->id)->with('user')->get();
+
+        $branch = config('branches.' . $order->branch_id);
+
+        return view('orders.invoice', [
+            'orders' => $orders,
+            'customer' => $order->user,
+            'transactionCode' => $order->transaction_code ?: 'TRX-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT),
+            'branch' => $branch,
+            'issuedAt' => $order->created_at,
+        ]);
+    }
+
     public function checkout(Request $request)
     {
         $product = $request->session()->get('direct_buy');

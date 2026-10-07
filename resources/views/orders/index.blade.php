@@ -37,7 +37,12 @@
                                 @forelse ($orders as $order)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td><span class="font-monospace small">{{ $order->transaction_code ?? 'Manual' }}</span></td>
+                                        <td>
+                                            <span class="font-monospace small">{{ $order->transaction_code ?? 'Manual' }}</span>
+                                            <a href="{{ route('orders.invoice', $order) }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-1 rounded-lg border border-teal-700 px-2.5 py-1.5 text-xs font-semibold text-teal-700 hover:bg-teal-50">
+                                                <i class="bi bi-printer" aria-hidden="true"></i> Cetak Faktur
+                                            </a>
+                                        </td>
                                         <td>{{ $order->user->name ?? 'Unknown' }}</td>
                                         <td>
                                             @if($order->product_name)

@@ -51,6 +51,8 @@ Route::delete('/keranjang/{key}', [CartController::class, 'remove'])->name('cart
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+    Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 });
@@ -107,6 +109,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(RoleMiddleware::class . ':PELANGGAN,KARYAWAN,ADMIN')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
         Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
         Route::post('/checkout', [OrderController::class, 'confirmCheckout'])->name('checkout.confirm');
