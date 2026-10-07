@@ -68,6 +68,9 @@ Route::middleware('auth')->group(function () {
         $pendingOrders = $customerOrders->where('status', 'pending')->count();
         $completedOrders = $customerOrders->where('status', 'selesai')->count();
         $canceledOrders = $customerOrders->where('status', 'batal')->count();
+        $branchOrder = $user && $user->role === 'PELANGGAN'
+            ? \App\Models\Order::where('user_id', $user->id)->whereNotNull('branch_id')->latest()->first()
+            : null;
 
         return view('dashboard', compact(
             'user',
@@ -79,7 +82,8 @@ Route::middleware('auth')->group(function () {
             'customerOrders',
             'pendingOrders',
             'completedOrders',
-            'canceledOrders'
+            'canceledOrders',
+            'branchOrder'
         ));
     });
 

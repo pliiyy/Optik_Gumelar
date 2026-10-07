@@ -28,6 +28,12 @@
                 Lihat produk dan status pesanan Anda.
             @endif
         </p>
+        @if($branchOrder)
+            <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/90">
+                <span><i class="bi bi-geo-alt mr-1" aria-hidden="true"></i>Cabang pilihan: <strong>{{ $branchOrder->branch_name }}</strong></span>
+                <span><i class="bi bi-signpost-2 mr-1" aria-hidden="true"></i>{{ number_format($branchOrder->branch_distance_km, 2, ',', '.') }} km dari lokasi saat checkout (perkiraan garis lurus)</span>
+            </div>
+        @endif
     </div>
     <a href="/" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-white/40 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-800">
         <i class="bi bi-arrow-left" aria-hidden="true"></i>

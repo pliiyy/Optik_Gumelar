@@ -1,6 +1,28 @@
 @extends('layouts.landlayout')
 
 @section('content')
+<div class="home-loading" id="home-loading" role="status" aria-label="Memuat halaman">
+    <div class="home-loading-content">
+        <img src="{{ asset('logo.png') }}" alt="Logo Optik Gumelar">
+        <span>Menyiapkan pengalaman terbaik...</span>
+        <span class="home-loading-spinner" aria-hidden="true"></span>
+    </div>
+</div>
+<script>
+    window.setTimeout(function () {
+        const loader = document.getElementById('home-loading');
+
+        if (!loader) {
+            return;
+        }
+
+        loader.classList.add('is-hidden');
+        window.setTimeout(function () {
+            loader.remove();
+        }, 300);
+    }, 2000);
+</script>
+
 <div class="bg-slate-50 min-h-screen">
     
     <!-- 1. Carousel Section -->

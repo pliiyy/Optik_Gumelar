@@ -18,22 +18,14 @@
         <div class="flex justify-between items-center px-6 lg:px-10 py-4">
         <div>
             <a href="/" class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
-                <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-700 text-white shadow-sm"><i class="bi bi-eyeglasses"></i></span>
+                <img src="{{ asset('logo.png') }}" alt="Logo Optik Gumelar" class="h-10 w-10 object-contain">
                 <span>Optik <span class="text-teal-700">Gumelar</span></span>
             </a>
         </div>
 
         <!-- Desktop Menu -->
-<<<<<<< HEAD
-        <div class="hidden md:flex space-x-8 items-center">
-            @php
-                $cartCount = collect(session('cart', []))->sum('quantity');
-            @endphp
-            <a href="/" class="text-slate-600 hover:text-slate-900 font-medium transition">Beranda</a>
-=======
         <div class="hidden md:flex space-x-7 items-center">
             <a href="/" class="text-slate-600 hover:text-teal-700 font-medium transition">Beranda</a>
->>>>>>> 2b8faee8b8c69a612160f21999c4fbe6f18f1ec5
 
             <!-- Dropdown: Produk -->
             <div class="relative">
@@ -51,27 +43,6 @@
     </div>
 </div>
 
-<<<<<<< HEAD
-            <a href="/tentang-kami" class="text-slate-600 hover:text-slate-900 font-medium transition">Tentang Kami</a>
-            <a href="/kontak" class="text-slate-600 hover:text-slate-900 font-medium transition">Kontak</a>
-            <a href="/login" class="text-slate-600 hover:text-slate-900 font-medium transition">Login</a>
-            <a href="/cabang" class="text-slate-600 hover:text-slate-900 font-medium transition">Cabang</a>
-
-            @auth
-                @if(Auth::user()->role === 'PELANGGAN')
-                    <a href="{{ route('cart.index') }}" class="relative text-slate-600 hover:text-slate-900 font-medium transition flex items-center gap-2" aria-label="Keranjang">
-                        <i class="bi bi-cart3 text-lg"></i>
-                        <span>Keranjang</span>
-                        @if($cartCount > 0)
-                            <span class="absolute -top-3 -right-3 min-w-5 h-5 px-1 rounded-full bg-sky-600 text-white text-[10px] leading-5 text-center">{{ $cartCount }}</span>
-                        @endif
-                    </a>
-                @endif
-            @endauth
-            
-            <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-slate-200 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-white transition flex gap-2 items-center bg-green-400 text-slate-900 font-medium">
-                <span>Whatsapp</span>
-=======
             <a href="/tentang-kami" class="text-slate-600 hover:text-teal-700 font-medium transition">Tentang Kami</a>
             <a href="/kontak" class="text-slate-600 hover:text-teal-700 font-medium transition">Kontak</a>
             @auth
@@ -83,7 +54,6 @@
             <a href="{{ route('cart.index') }}" class="relative text-slate-600 hover:text-teal-700 font-medium transition" aria-label="Keranjang belanja">
                 <i class="bi bi-bag text-lg"></i>
                 <span id="cart-count" class="{{ session('cart') ? '' : 'hidden' }} absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#f27d63] px-1 text-[10px] font-bold text-white">{{ collect(session('cart', []))->sum('quantity') }}</span>
->>>>>>> 2b8faee8b8c69a612160f21999c4fbe6f18f1ec5
             </a>
             
             <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-teal-700 px-4 py-2 rounded-xl hover:bg-teal-800 hover:text-white transition flex gap-2 items-center bg-teal-700 text-white font-medium shadow-sm">

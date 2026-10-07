@@ -1,70 +1,45 @@
-@extends('layouts.landlayout')
+@extends('layouts.authlayout')
 
+@section('title', 'Masuk')
+@section('topline', 'Masuk ke akun Anda')
 @section('content')
-<div class="min-h-[calc(100vh-5rem)] flex items-center justify-center bg-[radial-gradient(circle_at_top_right,_#e3f3ef,_transparent_40%)] py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-slate-200">
-        <div class="text-center">
-            <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-700 text-2xl text-white shadow-lg shadow-teal-900/15"><i class="bi bi-eyeglasses"></i></div>
-            <h2 class="text-3xl font-bold text-slate-900 tracking-tighter">Login</h2>
-            <p class="mt-2 text-sm text-slate-600">Masuk ke akun Optik Gumelar Anda</p>
+    <div class="auth-heading">
+        <img class="auth-heading-logo" src="{{ asset('logo.png') }}" alt="Logo Optik Gumelar">
+        <h2>Masuk</h2>
+        <p>Masukkan detail akun Anda untuk melanjutkan.</p>
+    </div>
+
+    <form class="auth-form" method="POST" action="{{ route('login.post') }}">
+        @csrf
+        <div class="auth-field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" required autofocus placeholder="nama@email.com">
         </div>
 
-        <form class="mt-8 space-y-6"  method="POST" action="/login">
-            @csrf
-            <div class="rounded-md shadow-sm space-y-4">
-                <!-- Email -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-slate-700">Email Address</label>
-                    <input id="email" name="email" type="email" required 
-                        class="appearance-none rounded-lg relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm mt-1"
-                        placeholder="nama@email.com">
-                </div>
+        <div class="auth-field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password">
+        </div>
 
-                <!-- Password -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-                    <input id="password" name="password" type="password" required 
-                        class="appearance-none rounded-lg relative block w-full px-3 py-3 border border-slate-300 placeholder-slate-500 text-slate-900 focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm mt-1"
-                        placeholder="••••••••">
-                </div>
-            </div>
+        <label class="auth-remember" for="remember_me">
+            <input id="remember_me" name="remember" type="checkbox" value="1">
+            <span>Ingat saya</span>
+        </label>
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="remember_me" name="remember" type="checkbox" 
-                        class="h-4 w-4 text-sky-600 focus:ring-sky-500 border-slate-300 rounded">
-                    <label for="remember_me" class="ml-2 block text-sm text-slate-900">Ingat saya</label>
-                </div>
-            </div>
+        <button class="auth-submit" type="submit">Masuk</button>
+    </form>
 
-            <div>
-                <button type="submit" 
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-teal-700 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition">
-                    Masuk
-                </button>
-            </div>
-        </form>
+    @if ($errors->any())
+        <div class="auth-alert auth-alert-error" role="alert">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
 
-        <p class="text-center text-sm text-slate-600">
-            Belum punya akun?
-            <a href="{{ route('register') }}" class="font-semibold text-sky-600 hover:text-sky-700">Daftar sekarang</a>
-        </p>
+    @if (session('success'))
+        <div class="auth-alert auth-alert-success" role="status">{{ session('success') }}</div>
+    @endif
 
-        @if ($errors->any())
-            <div class="mt-4 p-4 bg-red-50 text-red-700 text-sm rounded-lg">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        @if (session('success'))
-            <div class="mt-4 rounded-lg bg-green-50 p-4 text-sm text-green-700">
-                {{ session('success') }}
-            </div>
-        @endif
-    </div>
-</div>
+    <p class="auth-switch">Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a></p>
 @endsection

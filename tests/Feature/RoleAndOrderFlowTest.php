@@ -96,13 +96,27 @@ class RoleAndOrderFlowTest extends TestCase
         ]);
 
         $this->actingAs($customer)->get('/checkout')->assertOk();
-        $this->actingAs($customer)->post('/checkout', ['terms' => '1'])->assertRedirect('/orders');
+        $this->actingAs($customer)->post('/checkout', ['terms' => '1'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['branch_id', 'buyer_latitude', 'buyer_longitude']);
+        $this->actingAs($customer)->post('/checkout', [
+            'terms' => '1',
+            'branch_id' => 'ciburaleng',
+            'buyer_latitude' => -6.9662878,
+            'buyer_longitude' => 107.8181306,
+        ])->assertRedirect('/dashboard');
 
         $orders = Order::where('user_id', $customer->id)->get();
         $this->assertCount(2, $orders);
         $this->assertCount(1, $orders->pluck('transaction_code')->unique());
+        $this->assertSame('ciburaleng', $orders->first()->branch_id);
+        $this->assertSame(0.0, (float) $orders->first()->branch_distance_km);
         $this->assertSame(500000.0, (float) $orders->sum('total_price'));
         $this->assertSame([], session('cart', []));
+        $this->actingAs($customer)->get('/dashboard')
+            ->assertOk()
+            ->assertSee('Optik Gumelar Ciburaleng')
+            ->assertSee('0,00 km dari lokasi saat checkout (perkiraan garis lurus)');
     }
 
     public function test_customer_can_confirm_direct_purchase_after_accepting_terms(): void
@@ -130,13 +144,17 @@ class RoleAndOrderFlowTest extends TestCase
         $this->actingAs($customer)->post('/checkout', [
             'terms' => '1',
             'notes' => 'Konfirmasi di toko',
-        ])->assertRedirect('/orders');
+            'branch_id' => 'cinunuk',
+            'buyer_latitude' => -6.9394172,
+            'buyer_longitude' => 107.7386285,
+        ])->assertRedirect('/dashboard');
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $customer->id,
             'product_type' => 'accessory',
             'product_key' => 'hard-case-kacamata',
             'product_name' => 'Hard Case Kacamata',
+            'branch_id' => 'cinunuk',
             'quantity' => 2,
         ]);
     }
