@@ -46,6 +46,7 @@
                     if (in_array($role, ['ADMIN', 'KARYAWAN'])) {
                         $menu[] = ['url' => '/lenses', 'icon' => 'bi-circle-square', 'label' => 'Manajemen Lensa'];
                         $menu[] = ['url' => '/frames', 'icon' => 'bi-eyeglasses', 'label' => 'Manajemen Frame'];
+                        $menu[] = ['url' => '/accessories', 'icon' => 'bi-box-seam', 'label' => 'Manajemen Aksesoris'];
                     }
 
                     if ($role === 'ADMIN') {

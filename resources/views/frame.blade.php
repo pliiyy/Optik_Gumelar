@@ -48,6 +48,9 @@
                     <span class="text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded-full">{{ $frame['kategori'] }}</span>
                     <h3 class="font-semibold text-slate-900 mt-3">{{ $frame['nama'] }}</h3>
                     <p class="text-sm text-slate-500 mt-1">{{ $frame['bahan'] }}</p>
+                    <a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900">
+                        <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Lihat detail stok
+                    </a>
                 </div>
             </div>
 

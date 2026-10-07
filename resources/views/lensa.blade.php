@@ -14,6 +14,9 @@
                     <h2 class="font-semibold text-slate-900 mt-3">{{ $lens->name }}</h2>
                     <p class="text-sm text-slate-500 mt-1">{{ $lens->description ?: 'Lensa berkualitas untuk kebutuhan penglihatan Anda.' }}</p>
                     <p class="text-xs text-slate-400 mt-2">Stok: {{ $lens->stock }}</p>
+                    <a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900">
+                        <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Lihat detail stok
+                    </a>
                     <div class="flex items-center justify-between gap-2 mt-4"><span class="font-bold text-slate-900">Rp {{ number_format($lens->price, 0, ',', '.') }}</span>
                         @auth
                             @if(Auth::user()->role === 'PELANGGAN' && $lens->stock > 0)<div class="flex gap-2"><form method="POST" action="{{ route('cart.add') }}">@csrf<input type="hidden" name="product_type" value="lens"><input type="hidden" name="product_id" value="{{ $lens->id }}"><input type="hidden" name="quantity" value="1"><button type="submit" class="text-sm font-medium text-white bg-slate-600 hover:bg-slate-700 px-3 py-1.5 rounded-lg">Keranjang</button></form><button type="button" data-bs-toggle="modal" data-bs-target="#orderLens{{ $lens->id }}" class="text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 px-3 py-1.5 rounded-lg">Pesan Langsung</button></div>@else<span class="text-xs text-slate-400">{{ $lens->stock > 0 ? 'Hubungi toko' : 'Stok habis' }}</span>@endif

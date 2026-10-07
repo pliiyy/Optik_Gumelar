@@ -23,6 +23,7 @@
                                     <th>Kategori</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
+                                    <th>Detail Stok</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -34,6 +35,7 @@
                                         <td>{{ $frame->category }}</td>
                                         <td>Rp {{ number_format($frame->price, 0, ',', '.') }}</td>
                                         <td>{{ $frame->stock }}</td>
+                                        <td><a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-sm"><i class="bi bi-box-arrow-up-right me-1"></i>Lihat</a></td>
                                         <td class="text-center">
                                             <button type="button" class="btn btn-outline-primary btn-sm btn-edit-frame me-1" data-bs-toggle="modal" data-bs-target="#editFrameModal" data-id="{{ $frame->id }}" data-name="{{ $frame->name }}" data-category="{{ $frame->category }}" data-description="{{ $frame->description }}" data-price="{{ $frame->price }}" data-stock="{{ $frame->stock }}">
                                                 <i class="bi bi-pencil-square"></i>
@@ -45,7 +47,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">
+                                        <td colspan="7" class="text-center py-4 text-muted">
                                             <p class="mb-0">Belum ada data frame tersedia.</p>
                                         </td>
                                     </tr>

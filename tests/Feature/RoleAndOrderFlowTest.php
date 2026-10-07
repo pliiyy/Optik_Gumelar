@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Frame;
+use App\Models\Accessory;
 use App\Models\Lens;
 use App\Models\Order;
 use App\Models\User;
@@ -211,6 +212,77 @@ class RoleAndOrderFlowTest extends TestCase
             'email' => 'baru@example.com',
             'role' => 'PELANGGAN',
         ]);
+    }
+
+    public function test_checkout_creates_catalog_record_for_products_that_are_not_in_database(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $this->actingAs($customer)
+            ->withSession(['cart' => [
+                'frame-classic-round-tr90' => [
+                    'product_type' => 'frame',
+                    'product_key' => 'classic-round-tr90',
+                    'name' => 'Classic Round TR90',
+                    'category' => 'Pria',
+                    'price' => 350000,
+                    'quantity' => 1,
+                ],
+                'accessory-hard-case-kacamata' => [
+                    'product_type' => 'accessory',
+                    'product_key' => 'hard-case-kacamata',
+                    'name' => 'Hard Case Kacamata',
+                    'category' => 'Aksesoris',
+                    'price' => 75000,
+                    'quantity' => 1,
+                ],
+            ]])
+            ->post('/checkout', [
+                'terms' => '1',
+                'branch_id' => 'ciburaleng',
+                'buyer_latitude' => '-6.9662878',
+                'buyer_longitude' => '107.8181306',
+            ])
+            ->assertRedirect('/dashboard');
+
+        $this->assertDatabaseHas('frames', [
+            'catalog_key' => 'classic-round-tr90',
+            'name' => 'Classic Round TR90',
+            'stock' => 0,
+        ]);
+
+        $frame = Frame::where('catalog_key', 'classic-round-tr90')->firstOrFail();
+        $this->assertDatabaseHas('orders', [
+            'product_type' => 'frame',
+            'product_id' => $frame->id,
+            'product_key' => 'classic-round-tr90',
+        ]);
+        $this->assertDatabaseHas('accessories', [
+            'catalog_key' => 'hard-case-kacamata',
+            'name' => 'Hard Case Kacamata',
+            'stock' => 0,
+        ]);
+        $this->assertDatabaseCount('orders', 2);
+    }
+
+    public function test_accessory_management_has_spreadsheet_link_and_requires_staff_role(): void
+    {
+        $employee = User::factory()->create(['role' => 'KARYAWAN']);
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        Accessory::create([
+            'name' => 'Kain Lap Uji',
+            'category' => 'Aksesoris',
+            'price' => 10000,
+            'stock' => 2,
+        ]);
+
+        $this->actingAs($employee)
+            ->get('/accessories')
+            ->assertOk()
+            ->assertSee(config('products.inventory_spreadsheet_url'));
+
+        $this->actingAs($customer)->get('/accessories')->assertForbidden();
     }
 
     public function test_customer_can_add_product_to_cart_and_checkout_with_visit_date(): void

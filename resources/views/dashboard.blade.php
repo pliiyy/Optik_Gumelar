@@ -198,6 +198,8 @@
                                 <td>
                                     @if($order->product_type === 'lens')
                                         {{ $order->lens?->name ?? 'Lensa' }}
+                                    @elseif($order->product_type === 'accessory')
+                                        {{ $order->accessory?->name ?? 'Aksesoris' }}
                                     @else
                                         {{ $order->frame?->name ?? 'Frame' }}
                                     @endif

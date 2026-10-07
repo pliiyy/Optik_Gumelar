@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Frame;
 use App\Models\Lens;
 use App\Models\Order;
-use Illuminate\Http\Request;
+use App\Services\CatalogProductService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -17,9 +19,9 @@ class OrderController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'PELANGGAN') {
-            $orders = Order::where('user_id', $user->id)->with(['lens', 'frame'])->latest()->get();
+            $orders = Order::where('user_id', $user->id)->with(['lens', 'frame', 'accessory'])->latest()->get();
         } else {
-            $orders = Order::with(['user', 'lens', 'frame'])->latest()->get();
+            $orders = Order::with(['user', 'lens', 'frame', 'accessory'])->latest()->get();
         }
 
         return view('orders.index', compact('orders'));
@@ -41,7 +43,7 @@ class OrderController extends Controller
         return view('checkout', compact('items', 'total', 'branches'));
     }
 
-    public function confirmCheckout(Request $request)
+    public function confirmCheckout(Request $request, CatalogProductService $catalogProducts)
     {
         $request->validate([
             'terms' => 'accepted',
@@ -72,26 +74,30 @@ class OrderController extends Controller
             $branch['longitude']
         );
 
-        foreach ($items as $item) {
-            Order::create([
-                'user_id' => Auth::id(),
-                'product_type' => $item['product_type'],
-                'product_id' => null,
-                'product_key' => $item['product_key'],
-                'product_name' => $item['name'],
-                'product_category' => $item['category'],
-                'transaction_code' => $transactionCode,
-                'branch_id' => $request->branch_id,
-                'branch_name' => $branch['name'],
-                'branch_distance_km' => $distance,
-                'buyer_latitude' => $request->buyer_latitude,
-                'buyer_longitude' => $request->buyer_longitude,
-                'quantity' => $item['quantity'],
-                'notes' => $request->notes ?: 'Harus datang ke toko untuk konfirmasi pesanan.',
-                'status' => 'pending',
-                'total_price' => $item['price'] * $item['quantity'],
-            ]);
-        }
+        DB::transaction(function () use ($items, $transactionCode, $branch, $distance, $request, $catalogProducts) {
+            foreach ($items as $item) {
+                $product = $catalogProducts->ensureExists($item);
+
+                Order::create([
+                    'user_id' => Auth::id(),
+                    'product_type' => $item['product_type'],
+                    'product_id' => $product->id,
+                    'product_key' => $item['product_key'],
+                    'product_name' => $item['name'],
+                    'product_category' => $item['category'],
+                    'transaction_code' => $transactionCode,
+                    'branch_id' => $request->branch_id,
+                    'branch_name' => $branch['name'],
+                    'branch_distance_km' => $distance,
+                    'buyer_latitude' => $request->buyer_latitude,
+                    'buyer_longitude' => $request->buyer_longitude,
+                    'quantity' => $item['quantity'],
+                    'notes' => $request->notes ?: 'Harus datang ke toko untuk konfirmasi pesanan.',
+                    'status' => 'pending',
+                    'total_price' => $item['price'] * $item['quantity'],
+                ]);
+            }
+        });
 
         $request->session()->forget('direct_buy');
         $request->session()->forget('cart');

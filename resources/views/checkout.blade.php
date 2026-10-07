@@ -20,6 +20,9 @@
                         <p class="text-xs font-bold uppercase tracking-wider text-teal-700">{{ $item['category'] }}</p>
                         <h2 class="mt-2 text-lg font-bold text-slate-900">{{ $item['name'] }}</h2>
                         <p class="mt-1 text-sm text-slate-500">Jumlah: {{ $item['quantity'] }}</p>
+                        <a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900">
+                            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Lihat detail stok
+                        </a>
                     </div>
                     <p class="text-right font-bold text-slate-900">Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}</p>
                 </div>

@@ -43,4 +43,9 @@ class Order extends Model
     {
         return $this->belongsTo(Frame::class, 'product_id');
     }
+
+    public function accessory()
+    {
+        return $this->belongsTo(Accessory::class, 'product_id');
+    }
 }

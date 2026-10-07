@@ -24,7 +24,7 @@ class FrameController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        Frame::create($request->all());
+        Frame::create($request->only(['name', 'category', 'description', 'price', 'stock']));
 
         return redirect()->route('frames.index')->with('success', 'Data frame berhasil ditambahkan!');
     }
@@ -39,7 +39,7 @@ class FrameController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        $frame->update($request->all());
+        $frame->update($request->only(['name', 'category', 'description', 'price', 'stock']));
 
         return redirect()->route('frames.index')->with('success', 'Data frame berhasil diperbarui!');
     }

@@ -15,18 +15,28 @@
     </div>
 
     @php
-        $aksesoris = [
-            ['id' => 'hard-case-kacamata', 'nama' => 'Hard Case Kacamata', 'deskripsi' => 'Pelindung kokoh untuk menjaga frame tetap aman', 'harga' => 75000],
-            ['id' => 'pouch-kacamata', 'nama' => 'Pouch Kacamata', 'deskripsi' => 'Pouch ringan untuk penyimpanan sehari-hari', 'harga' => 35000],
-            ['id' => 'kain-lap-mikrofiber', 'nama' => 'Kain Lap Mikrofiber', 'deskripsi' => 'Membersihkan lensa tanpa meninggalkan goresan', 'harga' => 15000],
-            ['id' => 'tali-kacamata', 'nama' => 'Tali Kacamata', 'deskripsi' => 'Tali nyaman agar kacamata tetap mudah dijangkau', 'harga' => 25000],
-            ['id' => 'cairan-pembersih-lensa', 'nama' => 'Cairan Pembersih Lensa', 'deskripsi' => 'Membersihkan lensa dari debu dan minyak', 'harga' => 30000],
-            ['id' => 'obeng-mini-kacamata', 'nama' => 'Obeng Mini Kacamata', 'deskripsi' => 'Peralatan praktis untuk mengencangkan sekrup frame', 'harga' => 20000],
+        $accessoryCatalog = [
+            'hard-case-kacamata' => ['id' => 'hard-case-kacamata', 'nama' => 'Hard Case Kacamata', 'deskripsi' => 'Pelindung kokoh untuk menjaga frame tetap aman', 'harga' => 75000],
+            'pouch-kacamata' => ['id' => 'pouch-kacamata', 'nama' => 'Pouch Kacamata', 'deskripsi' => 'Pouch ringan untuk penyimpanan sehari-hari', 'harga' => 35000],
+            'kain-lap-mikrofiber' => ['id' => 'kain-lap-mikrofiber', 'nama' => 'Kain Lap Mikrofiber', 'deskripsi' => 'Membersihkan lensa tanpa meninggalkan goresan', 'harga' => 15000],
+            'tali-kacamata' => ['id' => 'tali-kacamata', 'nama' => 'Tali Kacamata', 'deskripsi' => 'Tali nyaman agar kacamata tetap mudah dijangkau', 'harga' => 25000],
+            'cairan-pembersih-lensa' => ['id' => 'cairan-pembersih-lensa', 'nama' => 'Cairan Pembersih Lensa', 'deskripsi' => 'Membersihkan lensa dari debu dan minyak', 'harga' => 30000],
+            'obeng-mini-kacamata' => ['id' => 'obeng-mini-kacamata', 'nama' => 'Obeng Mini Kacamata', 'deskripsi' => 'Peralatan praktis untuk mengencangkan sekrup frame', 'harga' => 20000],
         ];
+
+        foreach ($accessories as $accessory) {
+            $key = $accessory->catalog_key ?: 'db-' . $accessory->id;
+            $accessoryCatalog[$key] = [
+                'id' => $key,
+                'nama' => $accessory->name,
+                'deskripsi' => $accessory->description ?: 'Aksesoris pilihan untuk kebutuhan kacamata Anda.',
+                'harga' => $accessory->price,
+            ];
+        }
     @endphp
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach ($aksesoris as $item)
+        @foreach ($accessoryCatalog as $item)
         <div class="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition">
             <div class="aspect-[4/3] bg-slate-100 flex items-center justify-center">
                 <svg class="w-14 h-14 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -40,6 +50,9 @@
                 <p class="text-sm text-slate-500 mt-1">{{ $item['deskripsi'] }}</p>
                 <div class="mt-4 flex flex-col gap-3">
                     <span class="font-bold text-slate-900">Rp {{ number_format($item['harga'], 0, ',', '.') }}</span>
+                    <a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900">
+                        <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Lihat detail stok
+                    </a>
                     <div class="grid grid-cols-2 gap-2">
                         <form action="{{ route('cart.add') }}" method="POST" class="ajax-cart-form">
                             @csrf

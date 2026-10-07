@@ -44,6 +44,9 @@
                                 <span class="text-xs font-bold uppercase tracking-wider text-teal-700">{{ $item['category'] ?: ucfirst($item['product_type']) }}</span>
                                 <h2 class="mt-1 font-bold text-slate-900">{{ $item['name'] }}</h2>
                                 <p class="mt-1 text-sm font-semibold text-slate-600">Rp {{ number_format($item['price'], 0, ',', '.') }}</p>
+                                <a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-900">
+                                    <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> Lihat detail stok
+                                </a>
                             </div>
                         </div>
                         <div class="flex items-center justify-between gap-5 sm:justify-end">

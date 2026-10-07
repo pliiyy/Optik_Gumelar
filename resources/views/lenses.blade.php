@@ -23,6 +23,7 @@
                                     <th>Kategori</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
+                                    <th>Detail Stok</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -34,6 +35,7 @@
                                         <td>{{ $lens->category }}</td>
                                         <td>Rp {{ number_format($lens->price, 0, ',', '.') }}</td>
                                         <td>{{ $lens->stock }}</td>
+                                        <td><a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-sm"><i class="bi bi-box-arrow-up-right me-1"></i>Lihat</a></td>
                                         <td class="text-center">
                                             <button type="button" class="btn btn-outline-primary btn-sm btn-edit-lens me-1" data-bs-toggle="modal" data-bs-target="#editLensModal" data-id="{{ $lens->id }}" data-name="{{ $lens->name }}" data-category="{{ $lens->category }}" data-description="{{ $lens->description }}" data-price="{{ $lens->price }}" data-stock="{{ $lens->stock }}">
                                                 <i class="bi bi-pencil-square"></i>
@@ -45,7 +47,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-4 text-muted">
+                                        <td colspan="7" class="text-center py-4 text-muted">
                                             <p class="mb-0">Belum ada data lensa tersedia.</p>
                                         </td>
                                     </tr>

@@ -24,7 +24,7 @@ class LensController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        Lens::create($request->all());
+        Lens::create($request->only(['name', 'category', 'description', 'price', 'stock']));
 
         return redirect()->route('lenses.index')->with('success', 'Data lensa berhasil ditambahkan!');
     }
@@ -39,7 +39,7 @@ class LensController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        $lens->update($request->all());
+        $lens->update($request->only(['name', 'category', 'description', 'price', 'stock']));
 
         return redirect()->route('lenses.index')->with('success', 'Data lensa berhasil diperbarui!');
     }

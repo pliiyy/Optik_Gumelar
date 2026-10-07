@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrameController;
 use App\Http\Controllers\LensController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Models\Frame;
+use App\Models\Accessory;
 use App\Models\Lens;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +37,9 @@ Route::get('/produk/lensa', function () {
     return view('lensa', compact('lenses'));
 });
 Route::get('/produk/aksesoris', function () {
-    return view('aksesoris');
+    $accessories = Accessory::latest()->get();
+
+    return view('aksesoris', compact('accessories'));
 });
 
 Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
@@ -57,12 +61,13 @@ Route::middleware('auth')->group(function () {
         $totalUsers = User::count();
         $totalLenses = Lens::count();
         $totalFrames = Frame::count();
-        $totalProducts = $totalLenses + $totalFrames;
+        $totalAccessories = Accessory::count();
+        $totalProducts = $totalLenses + $totalFrames + $totalAccessories;
 
         $role = $user?->role ?? 'PELANGGAN';
 
         $customerOrders = $user && $user->role === 'PELANGGAN'
-            ? \App\Models\Order::where('user_id', $user->id)->with(['lens', 'frame'])->latest()->get()
+            ? \App\Models\Order::where('user_id', $user->id)->with(['lens', 'frame', 'accessory'])->latest()->get()
             : collect();
 
         $pendingOrders = $customerOrders->where('status', 'pending')->count();
@@ -78,6 +83,7 @@ Route::middleware('auth')->group(function () {
             'totalUsers',
             'totalLenses',
             'totalFrames',
+            'totalAccessories',
             'totalProducts',
             'customerOrders',
             'pendingOrders',
@@ -96,6 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(RoleMiddleware::class . ':KARYAWAN,ADMIN')->group(function () {
         Route::resource('lenses', LensController::class);
         Route::resource('frames', FrameController::class);
+        Route::resource('accessories', AccessoryController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 
     Route::middleware(RoleMiddleware::class . ':PELANGGAN,KARYAWAN,ADMIN')->group(function () {
