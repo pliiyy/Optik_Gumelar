@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrameController;
 use App\Http\Controllers\LensController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Models\Frame;
@@ -58,6 +59,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/pengaturan/profil', [ProfileSettingsController::class, 'edit'])->name('settings.profile.edit');
+    Route::put('/pengaturan/profil', [ProfileSettingsController::class, 'update'])->name('settings.profile.update');
+
     Route::get('/dashboard', function () {
         $user = auth()->user();
         $totalUsers = User::count();

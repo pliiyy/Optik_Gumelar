@@ -47,15 +47,11 @@
             <a href="/kontak" class="text-slate-600 hover:text-teal-700 font-medium transition">Kontak</a>
             @auth
             <a href="/dashboard" class="text-slate-600 hover:text-teal-700 font-medium transition">Dashboard</a>
+            <a href="{{ route('settings.profile.edit') }}" class="text-slate-600 hover:text-teal-700 font-medium transition">Pengaturan</a>
             @else
             <a href="/login" class="text-slate-600 hover:text-teal-700 font-medium transition">Login</a>
             @endauth
             <a href="/cabang" class="text-slate-600 hover:text-teal-700 font-medium transition">Cabang</a>
-            <a href="{{ route('cart.index') }}" class="relative text-slate-600 hover:text-teal-700 font-medium transition" aria-label="Keranjang belanja">
-                <i class="bi bi-bag text-lg"></i>
-                <span id="cart-count" class="{{ session('cart') ? '' : 'hidden' }} absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#f27d63] px-1 text-[10px] font-bold text-white">{{ collect(session('cart', []))->sum('quantity') }}</span>
-            </a>
-            
             <a href="https://wa.me/6281313293991" target="_blank" rel="noopener noreferrer" class="border border-teal-700 px-4 py-2 rounded-xl hover:bg-teal-800 hover:text-white transition flex gap-2 items-center bg-teal-700 text-white font-medium shadow-sm">
                 <i class="bi bi-whatsapp"></i><span>Whatsapp</span>
             </a>
@@ -75,13 +71,15 @@
                 <a href="/kontak" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Kontak</a>
                 @auth
                 <a href="/dashboard" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Dashboard</a>
+                <a href="{{ route('settings.profile.edit') }}" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Pengaturan</a>
                 @else
                 <a href="/login" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Login</a>
                 @endauth
-                <a href="{{ route('cart.index') }}" class="mt-2 rounded-xl bg-teal-700 px-3 py-2 text-center text-white">Buka Keranjang</a>
             </div>
         </div>
     </nav>
+
+    @include('components.floating-cart')
 
     <!-- CONTENT SECTION -->
     <main class="grow pt-20">

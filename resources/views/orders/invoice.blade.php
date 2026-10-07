@@ -229,8 +229,8 @@
             </p>
             <div class="customer-details">
                 <span class="label">Nama</span><span>{{ $customer->name ?? 'Pelanggan' }}</span>
-                <span class="label">Alamat</span><span>________________________________________</span>
-                <span class="label">HP</span><span>________________________________________</span>
+                <span class="label">Alamat</span><span>{{ $customer->address ?: '________________________________________' }}</span>
+                <span class="label">HP</span><span>{{ $customer->phone ?: '________________________________________' }}</span>
             </div>
             <table class="prescription">
                 <thead><tr><th></th><th>SPH</th><th>CYL</th><th>AX</th><th>PD</th></tr></thead>
@@ -264,7 +264,8 @@
             </p>
             <div class="customer-details">
                 <span class="label">Nama</span><span>{{ $customer->name ?? 'Pelanggan' }}</span>
-                <span class="label">Email</span><span>{{ $customer->email ?? '-' }}</span>
+                <span class="label">Alamat</span><span>{{ $customer->address ?: '-' }}</span>
+                <span class="label">HP</span><span>{{ $customer->phone ?: '-' }}</span>
                 <span class="label">Tanggal</span><span>{{ $issuedAt?->format('d-m-Y H:i') ?? now()->format('d-m-Y H:i') }}</span>
             </div>
             <table class="product-table">

@@ -14,12 +14,15 @@
     <!-- Slim Navbar -->
     <nav class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 fixed top-0 w-full z-50 h-16 flex items-center justify-between px-5 md:px-8 shadow-sm">
         <div class="flex items-center gap-4">
-            <a href="/" class="no-underline flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-700 text-white"><i class="bi bi-eyeglasses"></i></span><span class="font-bold text-slate-900 text-lg">Optik <span class="text-teal-700">Gumelar</span></span></a>
+            <a href="/" class="no-underline flex items-center gap-2"><img src="{{ asset('logo.png') }}" alt="Logo Optik Gumelar" class="h-10 w-10 object-contain"><span class="font-bold text-slate-900 text-lg">Optik <span class="text-teal-700">Gumelar</span></span></a>
             <span class="hidden sm:inline text-slate-300">/</span>
             <span class="hidden sm:inline rounded-full bg-[#e3f3ef] px-3 py-1 text-[10px] text-teal-700 font-bold tracking-widest">RUANG KERJA</span>
         </div>
         
         <div class="flex items-center gap-4">
+            <a href="{{ route('settings.profile.edit') }}" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-[#e3f3ef] hover:text-teal-700 transition">
+                <i class="bi bi-gear mr-1" aria-hidden="true"></i> Pengaturan
+            </a>
             <a href="{{ route('logout') }}" class="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 hover:bg-[#e3f3ef] hover:text-teal-700 transition">
                 <i class="bi bi-logout mr-1"></i> Logout
             </a>
@@ -28,6 +31,8 @@
             </div>
         </div>
     </nav>
+
+    @include('components.floating-cart')
 
     <!-- Main Wrapper -->
     <div class="flex pt-16 min-h-screen">

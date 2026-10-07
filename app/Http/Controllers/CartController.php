@@ -7,6 +7,7 @@ use App\Models\Frame;
 use App\Models\Lens;
 use App\Models\Order;
 use App\Services\CatalogProductService;
+use App\Services\ProductCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -151,34 +152,7 @@ class CartController extends Controller
 
     private function catalog(): array
     {
-        $catalog = [
-            'lens' => [
-                'single-vision-standard' => ['name' => 'Single Vision Standard', 'category' => 'Lensa Resep', 'price' => 150000],
-                'anti-radiasi-blue-light' => ['name' => 'Anti Radiasi Blue Light', 'category' => 'Lensa Resep', 'price' => 275000],
-                'photochromic-transisi' => ['name' => 'Photochromic (Transisi)', 'category' => 'Lensa Resep', 'price' => 550000],
-                'progressive-multifocal' => ['name' => 'Progressive Multifocal', 'category' => 'Lensa Resep', 'price' => 850000],
-                'soft-contact-lens-bening' => ['name' => 'Soft Contact Lens Bening', 'category' => 'Lensa Kontak', 'price' => 120000],
-                'contact-lens-silicone-hydrogel' => ['name' => 'Contact Lens Silicone Hydrogel', 'category' => 'Lensa Kontak', 'price' => 210000],
-                'lapisan-anti-gores' => ['name' => 'Lapisan Anti Gores', 'category' => 'Lensa Tambahan', 'price' => 50000],
-                'lapisan-anti-air-minyak' => ['name' => 'Lapisan Anti Air & Minyak', 'category' => 'Lensa Tambahan', 'price' => 75000],
-            ],
-            'frame' => [
-                'classic-round-tr90' => ['name' => 'Classic Round TR90', 'category' => 'Pria', 'price' => 350000],
-                'cat-eye-acetate' => ['name' => 'Cat Eye Acetate', 'category' => 'Wanita', 'price' => 420000],
-                'kids-flexible-frame' => ['name' => 'Kids Flexible Frame', 'category' => 'Anak', 'price' => 275000],
-                'titanium-rimless' => ['name' => 'Titanium Rimless', 'category' => 'Pria', 'price' => 650000],
-                'vintage-square-metal' => ['name' => 'Vintage Square Metal', 'category' => 'Wanita', 'price' => 390000],
-                'reading-glasses-basic' => ['name' => 'Reading Glasses Basic', 'category' => 'Kacamata Baca', 'price' => 180000],
-            ],
-            'accessory' => [
-                'hard-case-kacamata' => ['name' => 'Hard Case Kacamata', 'category' => 'Aksesoris', 'price' => 75000],
-                'pouch-kacamata' => ['name' => 'Pouch Kacamata', 'category' => 'Aksesoris', 'price' => 35000],
-                'kain-lap-mikrofiber' => ['name' => 'Kain Lap Mikrofiber', 'category' => 'Aksesoris', 'price' => 15000],
-                'tali-kacamata' => ['name' => 'Tali Kacamata', 'category' => 'Aksesoris', 'price' => 25000],
-                'cairan-pembersih-lensa' => ['name' => 'Cairan Pembersih Lensa', 'category' => 'Aksesoris', 'price' => 30000],
-                'obeng-mini-kacamata' => ['name' => 'Obeng Mini Kacamata', 'category' => 'Aksesoris', 'price' => 20000],
-            ],
-        ];
+        $catalog = ProductCatalog::items();
 
         foreach ([
             'lens' => Lens::class,
@@ -191,6 +165,7 @@ class CartController extends Controller
                     'name' => $product->name,
                     'category' => $product->category,
                     'price' => $product->price,
+                    'description' => $product->description,
                 ];
             }
         }

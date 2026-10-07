@@ -7,6 +7,7 @@ use App\Models\Accessory;
 use App\Models\Lens;
 use App\Models\Order;
 use App\Models\User;
+use Database\Seeders\ProductCatalogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as GoogleUser;
@@ -72,6 +73,53 @@ class RoleAndOrderFlowTest extends TestCase
             ->assertStatus(200)
             ->assertSee(route('orders.invoice', Order::where('user_id', $customer->id)->first()), false)
             ->assertSee('Cetak Faktur');
+    }
+
+    public function test_authenticated_user_can_update_address_and_phone(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $this->actingAs($customer)
+            ->get(route('settings.profile.edit'))
+            ->assertOk()
+            ->assertSee('Pengaturan Profil')
+            ->assertSee('name="address"', false)
+            ->assertSee('name="phone"', false);
+
+        $this->put(route('settings.profile.update'), [
+            'address' => 'Jl. Merdeka No. 10, Bandung',
+            'phone' => '+62 812-3456-7890',
+        ])
+            ->assertRedirect(route('settings.profile.edit'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $customer->id,
+            'address' => 'Jl. Merdeka No. 10, Bandung',
+            'phone' => '+62 812-3456-7890',
+        ]);
+    }
+
+    public function test_profile_settings_reject_invalid_phone_and_require_authentication(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+
+        $this->actingAs($customer)
+            ->put(route('settings.profile.update'), [
+                'address' => 'Alamat',
+                'phone' => '0812-INVALID',
+            ])
+            ->assertSessionHasErrors('phone');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $customer->id,
+            'address' => null,
+            'phone' => null,
+        ]);
+
+        auth()->logout();
+
+        $this->get(route('settings.profile.edit'))->assertRedirect('/login');
     }
 
     public function test_customer_can_print_all_items_in_their_transaction_invoice(): void
@@ -434,6 +482,60 @@ class RoleAndOrderFlowTest extends TestCase
             'stock' => 0,
         ]);
         $this->assertDatabaseCount('orders', 2);
+    }
+
+    public function test_product_catalog_seeder_adds_dummy_products_and_preserves_stock_on_repeat_runs(): void
+    {
+        $this->seed(ProductCatalogSeeder::class);
+
+        $this->assertDatabaseCount('frames', 6);
+        $this->assertDatabaseCount('lenses', 8);
+        $this->assertDatabaseCount('accessories', 6);
+        $this->assertDatabaseHas('frames', [
+            'catalog_key' => 'classic-round-tr90',
+            'stock' => 10,
+        ]);
+
+        Frame::where('catalog_key', 'classic-round-tr90')->update(['stock' => 4]);
+        $this->seed(ProductCatalogSeeder::class);
+
+        $this->assertDatabaseCount('frames', 6);
+        $this->assertDatabaseCount('lenses', 8);
+        $this->assertDatabaseCount('accessories', 6);
+        $this->assertDatabaseHas('frames', [
+            'catalog_key' => 'classic-round-tr90',
+            'stock' => 4,
+        ]);
+
+        $this->get('/produk/frame')->assertOk()->assertSee('Classic Round TR90');
+        $this->get('/produk/lensa')->assertOk()->assertSee('Single Vision Standard');
+        $this->get('/produk/aksesoris')->assertOk()->assertSee('Hard Case Kacamata');
+
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $lens = Lens::where('catalog_key', 'single-vision-standard')->firstOrFail();
+
+        $this->actingAs($customer)
+            ->post('/beli-sekarang', [
+                'product_type' => 'lens',
+                'product_key' => 'single-vision-standard',
+                'quantity' => 1,
+            ])
+            ->assertRedirect('/checkout');
+
+        $this->post('/checkout', [
+            'terms' => '1',
+            'branch_id' => 'ciburaleng',
+            'buyer_latitude' => '-6.9662878',
+            'buyer_longitude' => '107.8181306',
+        ])->assertRedirect('/dashboard');
+
+        $this->assertDatabaseHas('orders', [
+            'user_id' => $customer->id,
+            'product_type' => 'lens',
+            'product_id' => $lens->id,
+            'product_key' => 'single-vision-standard',
+            'total_price' => 150000,
+        ]);
     }
 
     public function test_accessory_management_has_spreadsheet_link_and_requires_staff_role(): void

@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(ProductCatalogSeeder::class);
+
         User::updateOrCreate(
             ['email' => 'master@gmail.com'],
             [

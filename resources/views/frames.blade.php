@@ -9,9 +9,14 @@
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3">
                     <h5 class="mb-0 fw-bold"><i class="bi bi-eyeglasses me-2"></i>Data Frame</h5>
-                    <button class="btn btn-light btn-sm text-primary fw-semibold px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#createFrameModal">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Frame
-                    </button>
+                    <div class="d-flex gap-2">
+                        <a href="{{ config('products.inventory_spreadsheet_url') }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light btn-sm fw-semibold px-3">
+                            <i class="bi bi-box-arrow-up-right me-1"></i> Detail Stok
+                        </a>
+                        <button class="btn btn-light btn-sm text-primary fw-semibold px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#createFrameModal">
+                            <i class="bi bi-plus-lg me-1"></i> Tambah Frame
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
