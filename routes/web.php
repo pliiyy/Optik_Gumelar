@@ -21,9 +21,9 @@ Route::get('/', function () {
 Route::get('/tentang-kami', function () {
     return view('about');
 });
-Route::get('/kontak', function () {
-    return view('contact');
-});
+Route::get('/info-lensa', function () {
+    return view('lens-info');
+})->name('info-lensa');
 Route::get('/cabang', function () {
     return view('cabang');
 });

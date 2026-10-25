@@ -44,7 +44,7 @@
 </div>
 
             <a href="/tentang-kami" class="text-slate-600 hover:text-teal-700 font-medium transition">Tentang Kami</a>
-            <a href="/kontak" class="text-slate-600 hover:text-teal-700 font-medium transition">Kontak</a>
+            <a href="{{ route('info-lensa') }}" class="text-slate-600 hover:text-teal-700 font-medium transition">Info Lensa</a>
             @auth
             <a href="/dashboard" class="text-slate-600 hover:text-teal-700 font-medium transition">Dashboard</a>
             <a href="{{ route('settings.profile.edit') }}" class="text-slate-600 hover:text-teal-700 font-medium transition">Pengaturan</a>
@@ -68,7 +68,7 @@
                 <a href="/produk/lensa" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Lensa</a>
                 <a href="/produk/aksesoris" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Aksesoris</a>
                 <a href="/tentang-kami" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Tentang Kami</a>
-                <a href="/kontak" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Kontak</a>
+                <a href="{{ route('info-lensa') }}" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Info Lensa</a>
                 @auth
                 <a href="/dashboard" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Dashboard</a>
                 <a href="{{ route('settings.profile.edit') }}" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-[#e3f3ef] hover:text-teal-700">Pengaturan</a>
@@ -101,7 +101,7 @@
                     <ul class="space-y-4 text-sm">
                         <li><a href="/" class="hover:text-sky-400 transition">Beranda</a></li>
                         <li><a href="/tentang-kami" class="hover:text-sky-400 transition">Tentang Kami</a></li>
-                        <li><a href="/kontak" class="hover:text-sky-400 transition">Kontak</a></li>
+                        <li><a href="{{ route('info-lensa') }}" class="hover:text-sky-400 transition">Info Lensa</a></li>
                         @auth
                         <li><a href="/dashboard" class="hover:text-sky-400 transition">Dashboard</a></li>
                         @else

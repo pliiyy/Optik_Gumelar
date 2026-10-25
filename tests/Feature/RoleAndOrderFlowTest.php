@@ -488,7 +488,7 @@ class RoleAndOrderFlowTest extends TestCase
     {
         $this->seed(ProductCatalogSeeder::class);
 
-        $this->assertDatabaseCount('frames', 6);
+        $this->assertDatabaseCount('frames', 20);
         $this->assertDatabaseCount('lenses', 8);
         $this->assertDatabaseCount('accessories', 6);
         $this->assertDatabaseHas('frames', [
@@ -499,7 +499,7 @@ class RoleAndOrderFlowTest extends TestCase
         Frame::where('catalog_key', 'classic-round-tr90')->update(['stock' => 4]);
         $this->seed(ProductCatalogSeeder::class);
 
-        $this->assertDatabaseCount('frames', 6);
+        $this->assertDatabaseCount('frames', 20);
         $this->assertDatabaseCount('lenses', 8);
         $this->assertDatabaseCount('accessories', 6);
         $this->assertDatabaseHas('frames', [
@@ -507,7 +507,10 @@ class RoleAndOrderFlowTest extends TestCase
             'stock' => 4,
         ]);
 
-        $this->get('/produk/frame')->assertOk()->assertSee('Classic Round TR90');
+        $this->get('/produk/frame')
+            ->assertOk()
+            ->assertSee('Classic Round TR90')
+            ->assertSee('Reading Glasses Half Frame');
         $this->get('/produk/lensa')->assertOk()->assertSee('Single Vision Standard');
         $this->get('/produk/aksesoris')->assertOk()->assertSee('Hard Case Kacamata');
 
