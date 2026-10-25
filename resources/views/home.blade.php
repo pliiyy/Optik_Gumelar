@@ -76,6 +76,44 @@
         </div>
     </section>
 
+    <!-- Foto Informasi dan Peralatan Optik -->
+    <section class="bg-white py-24">
+        <div class="container mx-auto px-6">
+            <div class="mb-12 text-center">
+                <p class="mb-3 text-sm font-bold uppercase tracking-[.18em] text-teal-700">Optik Gumelar</p>
+                <h2 class="mb-4 text-3xl font-bold text-slate-900">Informasi dan Peralatan Optik</h2>
+                <p class="mx-auto max-w-2xl text-slate-500">
+                    Lihat informasi lensa dan peralatan pemeriksaan yang mendukung layanan kami.
+                </p>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                @foreach([
+                    ['image' => 'info-optik.jpeg', 'alt' => 'Teknologi lensa progresif dengan bidang pandang yang presisi', 'title' => 'Presisi di Setiap Jarak', 'description' => 'Teknologi lensa progresif untuk penglihatan yang lebih luas dan nyaman.'],
+                    ['image' => 'info-optik2.jpeg', 'alt' => 'Teknologi lensa untuk penglihatan yang stabil dan nyaman', 'title' => 'Nyaman di Segala Jarak', 'description' => 'Transisi penglihatan yang halus dari jarak dekat hingga jauh.'],
+                    ['image' => 'alat-optik1.jpeg', 'alt' => 'Peralatan pemeriksaan mata di Optik Gumelar', 'title' => 'Pemeriksaan Mata Menyeluruh', 'description' => 'Didukung peralatan untuk membantu pemeriksaan mata yang cermat.'],
+                    ['image' => 'alat-optik2.jpeg', 'alt' => 'Peralatan digital untuk pengukuran mata', 'title' => 'Teknologi Pengukuran Digital', 'description' => 'Peralatan modern untuk mendukung pengukuran penglihatan.'],
+                ] as $photo)
+                    <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                        <div class="flex h-80 items-center justify-center bg-slate-100">
+                            <img
+                                src="{{ asset($photo['image']) }}"
+                                alt="{{ $photo['alt'] }}"
+                                class="h-full w-full object-contain"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                        </div>
+                        <figcaption class="p-5">
+                            <h3 class="mb-2 text-lg font-bold text-slate-900">{{ $photo['title'] }}</h3>
+                            <p class="mb-0 text-sm text-slate-600">{{ $photo['description'] }}</p>
+                        </figcaption>
+                    </figure>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- 4. Solusi Terpercaya -->
     <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
@@ -105,10 +143,10 @@
 
                 <div class="md:w-1/2 grid grid-cols-2 gap-4">
                     <div class="bg-slate-100 h-64 rounded-2xl overflow-hidden">
-                        <img src="{{ asset('credit.png') }}" class="w-full h-full object-cover" alt="Credit">
+                        <img src="{{ asset('credit.jpeg') }}" class="w-full h-full object-cover" alt="Credit">
                     </div>
                     <div class="bg-sky-600 h-64 rounded-2xl mt-8 overflow-hidden">
-                        <img src="{{ asset('tech.png') }}" class="w-full h-full object-cover" alt="Tech">
+                        <img src="{{ asset('tech.jpeg') }}" class="w-full h-full object-cover" alt="Tech">
                     </div>
                 </div>
             </div>

@@ -22,12 +22,22 @@ class Order extends Model
         'branch_distance_km',
         'buyer_latitude',
         'buyer_longitude',
+        'customer_address',
+        'customer_phone',
         'quantity',
         'planned_visit_date',
+        'prescription',
         'notes',
         'status',
         'total_price',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'prescription' => 'array',
+        ];
+    }
 
     public function user()
     {

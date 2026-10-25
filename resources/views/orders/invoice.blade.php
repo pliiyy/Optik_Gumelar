@@ -229,15 +229,28 @@
             </p>
             <div class="customer-details">
                 <span class="label">Nama</span><span>{{ $customer->name ?? 'Pelanggan' }}</span>
-                <span class="label">Alamat</span><span>{{ $customer->address ?: '________________________________________' }}</span>
-                <span class="label">HP</span><span>{{ $customer->phone ?: '________________________________________' }}</span>
+                <span class="label">Alamat</span><span>{{ $orders->first()?->customer_address ?: $customer->address ?: '________________________________________' }}</span>
+                <span class="label">HP</span><span>{{ $orders->first()?->customer_phone ?: $customer->phone ?: '________________________________________' }}</span>
+                <span class="label">Rencana</span><span>{{ $orders->first()?->planned_visit_date ? \Illuminate\Support\Carbon::parse($orders->first()->planned_visit_date)->format('d-m-Y') : '________________' }}</span>
             </div>
             <table class="prescription">
                 <thead><tr><th></th><th>SPH</th><th>CYL</th><th>AX</th><th>PD</th></tr></thead>
                 <tbody>
-                    <tr><th>OD</th><td></td><td></td><td></td><td></td></tr>
-                    <tr><th>OS</th><td></td><td></td><td></td><td></td></tr>
-                    <tr><th>ADD</th><td colspan="4"></td></tr>
+                    <tr>
+                        <th>OD</th>
+                        <td>{{ data_get($orders->first()?->prescription, 'od.sph') }}</td>
+                        <td>{{ data_get($orders->first()?->prescription, 'od.cyl') }}</td>
+                        <td>{{ data_get($orders->first()?->prescription, 'od.ax') }}</td>
+                        <td>{{ data_get($orders->first()?->prescription, 'od.pd') }}</td>
+                    </tr>
+                    <tr>
+                        <th>OS</th>
+                        <td>{{ data_get($orders->first()?->prescription, 'os.sph') }}</td>
+                        <td>{{ data_get($orders->first()?->prescription, 'os.cyl') }}</td>
+                        <td>{{ data_get($orders->first()?->prescription, 'os.ax') }}</td>
+                        <td>{{ data_get($orders->first()?->prescription, 'os.pd') }}</td>
+                    </tr>
+                    <tr><th>ADD</th><td colspan="4">{{ data_get($orders->first()?->prescription, 'add') }}</td></tr>
                 </tbody>
             </table>
             <div class="lens-diagram" aria-hidden="true">
@@ -264,8 +277,8 @@
             </p>
             <div class="customer-details">
                 <span class="label">Nama</span><span>{{ $customer->name ?? 'Pelanggan' }}</span>
-                <span class="label">Alamat</span><span>{{ $customer->address ?: '-' }}</span>
-                <span class="label">HP</span><span>{{ $customer->phone ?: '-' }}</span>
+                <span class="label">Alamat</span><span>{{ $orders->first()?->customer_address ?: $customer->address ?: '-' }}</span>
+                <span class="label">HP</span><span>{{ $orders->first()?->customer_phone ?: $customer->phone ?: '-' }}</span>
                 <span class="label">Tanggal</span><span>{{ $issuedAt?->format('d-m-Y H:i') ?? now()->format('d-m-Y H:i') }}</span>
             </div>
             <table class="product-table">

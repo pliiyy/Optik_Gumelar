@@ -6,7 +6,7 @@
             
             <!-- Slide 1 -->
             <div class="swiper-slide relative flex flex-col h-full w-full items-center justify-center overflow-hidden">
-    <img src="{{ asset('carousel3.png') }}" alt="Pemeriksaan Mata Profesional" class="absolute inset-0 h-full w-full object-cover" loading="eager">
+    <img src="{{ asset('carousel1.jpeg') }}" alt="Pemeriksaan Mata Profesional" class="absolute inset-0 h-full w-full object-cover" loading="eager">
     <div class="absolute inset-0 bg-[#17324d]/45"></div>
     
     <div class="relative z-10 max-w-3xl text-center text-white px-4">
@@ -19,7 +19,7 @@
 
             <!-- Slide 2 -->
             <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel1.png') }}" alt="Frame Stylish" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
+                <img src="{{ asset('carousel3.jpeg') }}" alt="Frame Stylish" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Frame Stylish</h1>
@@ -30,7 +30,7 @@
 
             <!-- Slide 3 -->
             <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel2.png') }}" alt="Lensa Berkualitas" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
+                <img src="{{ asset('carousel4.jpeg') }}" alt="Lensa Berkualitas" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Lensa Berkualitas</h1>
@@ -41,7 +41,7 @@
 
             <!-- Slide 4 -->
             <div class="swiper-slide relative flex h-full w-full items-center justify-center overflow-hidden">
-                <img src="{{ asset('carousel4.png') }}" alt="Servis Kacamata & Perawatan" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
+                <img src="{{ asset('carousel3.jpeg') }}" alt="Servis Kacamata & Perawatan" class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-slate-900/40"></div>
                 <div class="relative z-10 text-center text-white px-4">
                     <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">Servis Kacamata & Perawatan</h1>

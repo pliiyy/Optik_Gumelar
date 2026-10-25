@@ -100,6 +100,8 @@ class OrderController extends Controller
         );
 
         DB::transaction(function () use ($items, $transactionCode, $branch, $distance, $request, $catalogProducts) {
+            $customer = $request->user();
+
             foreach ($items as $item) {
                 $product = $catalogProducts->ensureExists($item);
 
@@ -116,6 +118,8 @@ class OrderController extends Controller
                     'branch_distance_km' => $distance,
                     'buyer_latitude' => $request->buyer_latitude,
                     'buyer_longitude' => $request->buyer_longitude,
+                    'customer_address' => $customer->address,
+                    'customer_phone' => $customer->phone,
                     'quantity' => $item['quantity'],
                     'notes' => $request->notes ?: 'Harus datang ke toko untuk konfirmasi pesanan.',
                     'status' => 'pending',
@@ -155,6 +159,8 @@ class OrderController extends Controller
             'user_id' => Auth::id(),
             'product_type' => $request->product_type,
             'product_id' => $product->id,
+            'customer_address' => $request->user()->address,
+            'customer_phone' => $request->user()->phone,
             'quantity' => $request->quantity,
             'planned_visit_date' => $request->planned_visit_date,
             'notes' => $request->notes ?: 'Harus datang ke toko untuk konfirmasi pesanan.',
@@ -182,6 +188,50 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index')->with('success', 'Status pesanan berhasil diperbarui.');
+    }
+
+    public function update(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'planned_visit_date' => 'nullable|date',
+            'customer_address' => 'nullable|string|max:500',
+            'customer_phone' => ['nullable', 'string', 'max:30', 'regex:/^[0-9+\s().-]*$/'],
+            'prescription' => 'required|array',
+            'prescription.od' => 'required|array',
+            'prescription.od.sph' => 'nullable|numeric|between:-30,30',
+            'prescription.od.cyl' => 'nullable|numeric|between:-30,30',
+            'prescription.od.ax' => 'nullable|integer|between:0,180',
+            'prescription.od.pd' => 'nullable|numeric|between:0,100',
+            'prescription.os' => 'required|array',
+            'prescription.os.sph' => 'nullable|numeric|between:-30,30',
+            'prescription.os.cyl' => 'nullable|numeric|between:-30,30',
+            'prescription.os.ax' => 'nullable|integer|between:0,180',
+            'prescription.os.pd' => 'nullable|numeric|between:0,100',
+            'prescription.add' => 'nullable|numeric|between:-30,30',
+        ]);
+
+        $orderData = [
+            'planned_visit_date' => $validated['planned_visit_date'] ?? null,
+            'customer_address' => $validated['customer_address'] ?? null,
+            'customer_phone' => $validated['customer_phone'] ?? null,
+            'prescription' => $validated['prescription'],
+        ];
+
+        if ($order->transaction_code) {
+            $orders = Order::where('transaction_code', $order->transaction_code)
+                ->where('user_id', $order->user_id)
+                ->get();
+
+            DB::transaction(function () use ($orders, $orderData) {
+                foreach ($orders as $transactionOrder) {
+                    $transactionOrder->update($orderData);
+                }
+            });
+        } else {
+            $order->update($orderData);
+        }
+
+        return redirect()->route('orders.index')->with('success', 'Data transaksi berhasil diperbarui.');
     }
 
     private function distanceInKilometers(float $latitudeFrom, float $longitudeFrom, float $latitudeTo, float $longitudeTo): float

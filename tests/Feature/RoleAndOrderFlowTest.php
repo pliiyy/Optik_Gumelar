@@ -22,7 +22,11 @@ class RoleAndOrderFlowTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('href="/login"', false)
-            ->assertDontSee('href="/dashboard"', false);
+            ->assertDontSee('href="/dashboard"', false)
+            ->assertSee(asset('info-optik.jpeg'), false)
+            ->assertSee(asset('info-optik2.jpeg'), false)
+            ->assertSee(asset('alat-optik1.jpeg'), false)
+            ->assertSee(asset('alat-optik2.jpeg'), false);
 
         $customer = User::factory()->create(['role' => 'PELANGGAN']);
 
@@ -73,6 +77,47 @@ class RoleAndOrderFlowTest extends TestCase
             ->assertStatus(200)
             ->assertSee(route('orders.invoice', Order::where('user_id', $customer->id)->first()), false)
             ->assertSee('Cetak Faktur');
+    }
+
+    public function test_invoice_keeps_customer_contact_details_from_order_time(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $address = 'Jl. Merdeka No. 10, Bandung';
+        $phone = '+62 812-3456-7890';
+        $this->actingAs($customer)->put(route('settings.profile.update'), [
+            'address' => $address,
+            'phone' => $phone,
+        ])->assertRedirect(route('settings.profile.edit'));
+
+        $lens = Lens::create([
+            'name' => 'Lensa Resep',
+            'category' => 'Resep',
+            'description' => 'Lensa resep',
+            'price' => 150000,
+            'stock' => 5,
+        ]);
+
+        $this->actingAs($customer)->post(route('orders.store'), [
+            'product_type' => 'lens',
+            'product_id' => $lens->id,
+            'quantity' => 1,
+            'planned_visit_date' => now()->addDay()->toDateString(),
+        ])->assertRedirect(route('orders.index'));
+
+        $order = Order::where('user_id', $customer->id)->firstOrFail();
+        $this->assertSame($address, $order->customer_address);
+        $this->assertSame($phone, $order->customer_phone);
+
+        $this->actingAs($customer)->put(route('settings.profile.update'), [
+            'address' => '',
+            'phone' => '',
+        ])->assertRedirect(route('settings.profile.edit'));
+
+        $this->actingAs($customer)
+            ->get(route('orders.invoice', $order))
+            ->assertOk()
+            ->assertSee($address)
+            ->assertSee($phone);
     }
 
     public function test_authenticated_user_can_update_address_and_phone(): void
@@ -195,7 +240,11 @@ class RoleAndOrderFlowTest extends TestCase
 
     public function test_customer_can_checkout_cart_items_as_one_transaction(): void
     {
-        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $customer = User::factory()->create([
+            'role' => 'PELANGGAN',
+            'address' => 'Jl. Melati No. 5',
+            'phone' => '081234567890',
+        ]);
 
         $this->withHeaders(['Accept' => 'application/json'])->post('/keranjang/tambah', [
             'product_type' => 'frame',
@@ -225,6 +274,8 @@ class RoleAndOrderFlowTest extends TestCase
         $this->assertSame('ciburaleng', $orders->first()->branch_id);
         $this->assertSame(0.0, (float) $orders->first()->branch_distance_km);
         $this->assertSame(500000.0, (float) $orders->sum('total_price'));
+        $this->assertSame('Jl. Melati No. 5', $orders->first()->customer_address);
+        $this->assertSame('081234567890', $orders->first()->customer_phone);
         $this->assertSame([], session('cart', []));
         $this->actingAs($customer)->get('/dashboard')
             ->assertOk()
@@ -300,6 +351,89 @@ class RoleAndOrderFlowTest extends TestCase
             ->assertRedirect('/orders');
 
         $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => 'selesai']);
+    }
+
+    public function test_karyawan_can_update_transaction_visit_date_and_prescription(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $karyawan = User::factory()->create(['role' => 'KARYAWAN']);
+        $order = Order::create([
+            'user_id' => $customer->id,
+            'product_type' => 'lens',
+            'quantity' => 1,
+            'transaction_code' => 'TRX-PRESCRIPTION-1',
+            'status' => 'pending',
+            'total_price' => 150000,
+        ]);
+        $otherOrder = Order::create([
+            'user_id' => $customer->id,
+            'product_type' => 'frame',
+            'quantity' => 1,
+            'transaction_code' => 'TRX-PRESCRIPTION-1',
+            'status' => 'pending',
+            'total_price' => 200000,
+        ]);
+        $plannedVisitDate = now()->addDays(3)->toDateString();
+        $customerAddress = 'Jl. Mawar No. 25, Bandung';
+        $customerPhone = '+62 812-0000-1234';
+        $prescription = [
+            'od' => ['sph' => '-1.25', 'cyl' => '-0.50', 'ax' => '90', 'pd' => '31'],
+            'os' => ['sph' => '-1.00', 'cyl' => '-0.25', 'ax' => '85', 'pd' => '30.5'],
+            'add' => '1.50',
+        ];
+
+        $this->actingAs($karyawan)
+            ->patch(route('orders.update', $order), [
+                'planned_visit_date' => $plannedVisitDate,
+                'customer_address' => $customerAddress,
+                'customer_phone' => $customerPhone,
+                'prescription' => $prescription,
+            ])
+            ->assertRedirect(route('orders.index'))
+            ->assertSessionHas('success');
+
+        foreach ([$order, $otherOrder] as $transactionOrder) {
+            $updatedOrder = $transactionOrder->fresh();
+            $this->assertSame($plannedVisitDate, \Illuminate\Support\Carbon::parse($updatedOrder->planned_visit_date)->toDateString());
+            $this->assertSame($customerAddress, $updatedOrder->customer_address);
+            $this->assertSame($customerPhone, $updatedOrder->customer_phone);
+            $this->assertSame($prescription, $updatedOrder->prescription);
+        }
+
+        $this->actingAs($karyawan)
+            ->get(route('orders.invoice', $order))
+            ->assertOk()
+            ->assertSee('-1.25')
+            ->assertSee('1.50')
+            ->assertSee($customerAddress)
+            ->assertSee($customerPhone)
+            ->assertSee(\Illuminate\Support\Carbon::parse($plannedVisitDate)->format('d-m-Y'));
+    }
+
+    public function test_customer_cannot_update_transaction_prescription_or_visit_date(): void
+    {
+        $customer = User::factory()->create(['role' => 'PELANGGAN']);
+        $order = Order::create([
+            'user_id' => $customer->id,
+            'product_type' => 'lens',
+            'quantity' => 1,
+            'status' => 'pending',
+            'total_price' => 150000,
+        ]);
+
+        $this->actingAs($customer)
+            ->patch(route('orders.update', $order), [
+                'planned_visit_date' => now()->addDay()->toDateString(),
+                'prescription' => [
+                    'od' => ['sph' => '1', 'cyl' => null, 'ax' => null, 'pd' => null],
+                    'os' => ['sph' => null, 'cyl' => null, 'ax' => null, 'pd' => null],
+                    'add' => null,
+                ],
+            ])
+            ->assertForbidden();
+
+        $this->assertNull($order->fresh()->planned_visit_date);
+        $this->assertNull($order->fresh()->prescription);
     }
 
     public function test_customer_cannot_access_employee_management_page(): void

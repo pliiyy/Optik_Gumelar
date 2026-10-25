@@ -16,6 +16,18 @@
                     @endif
                 </div>
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
@@ -68,6 +80,24 @@
                                         </td>
                                         @if(Auth::user()->role !== 'PELANGGAN')
                                             <td class="text-center">
+                                                <button type="button" class="btn btn-outline-primary btn-sm mb-1"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editOrderModal"
+                                                    data-order-id="{{ $order->id }}"
+                                                    data-planned-visit-date="{{ $order->planned_visit_date ? \Illuminate\Support\Carbon::parse($order->planned_visit_date)->format('Y-m-d') : '' }}"
+                                                    data-customer-address="{{ $order->customer_address ?? $order->user?->address }}"
+                                                    data-customer-phone="{{ $order->customer_phone ?? $order->user?->phone }}"
+                                                    data-od-sph="{{ data_get($order->prescription, 'od.sph') }}"
+                                                    data-od-cyl="{{ data_get($order->prescription, 'od.cyl') }}"
+                                                    data-od-ax="{{ data_get($order->prescription, 'od.ax') }}"
+                                                    data-od-pd="{{ data_get($order->prescription, 'od.pd') }}"
+                                                    data-os-sph="{{ data_get($order->prescription, 'os.sph') }}"
+                                                    data-os-cyl="{{ data_get($order->prescription, 'os.cyl') }}"
+                                                    data-os-ax="{{ data_get($order->prescription, 'os.ax') }}"
+                                                    data-os-pd="{{ data_get($order->prescription, 'os.pd') }}"
+                                                    data-prescription-add="{{ data_get($order->prescription, 'add') }}">
+                                                    <i class="bi bi-pencil-square me-1"></i>Edit Data
+                                                </button>
                                                 <form action="{{ route('orders.updateStatus', $order) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     @method('PATCH')
@@ -93,6 +123,79 @@
         </div>
     </div>
 </div>
+
+@if(in_array(Auth::user()->role, ['ADMIN', 'KARYAWAN'], true))
+<div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <form class="modal-content border-0 shadow" id="editOrderForm" method="POST"
+            action="{{ old('order_id') ? route('orders.update', old('order_id')) : '#' }}">
+            @csrf
+            @method('PATCH')
+            <input type="hidden" name="order_id" id="edit-order-id" value="{{ old('order_id') }}">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="editOrderModalLabel"><i class="bi bi-pencil-square me-2"></i>Edit Data Transaksi</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <label for="edit-planned-visit-date" class="form-label fw-semibold">Tanggal rencana datang</label>
+                    <input type="date" class="form-control" id="edit-planned-visit-date" name="planned_visit_date" value="{{ old('planned_visit_date') }}">
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-7">
+                        <label for="edit-customer-address" class="form-label fw-semibold">Alamat pembeli</label>
+                        <textarea class="form-control" id="edit-customer-address" name="customer_address" rows="2" maxlength="500">{{ old('customer_address') }}</textarea>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="edit-customer-phone" class="form-label fw-semibold">No. HP pembeli</label>
+                        <input type="tel" class="form-control" id="edit-customer-phone" name="customer_phone"
+                            value="{{ old('customer_phone') }}" maxlength="30" autocomplete="tel" inputmode="tel">
+                    </div>
+                </div>
+                <label class="form-label fw-semibold">Data Resep Mata</label>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center align-middle">
+                        <thead class="table-light">
+                            <tr><th></th><th>SPH</th><th>CYL</th><th>AX</th><th>PD</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach(['od' => 'OD', 'os' => 'OS'] as $eye => $label)
+                                <tr>
+                                    <th>{{ $label }}</th>
+                                    @foreach(['sph' => ['SPH', '-30', '30', '0.25'], 'cyl' => ['CYL', '-30', '30', '0.25'], 'ax' => ['AX', '0', '180', '1'], 'pd' => ['PD', '0', '100', '0.5']] as $field => [$fieldLabel, $min, $max, $step])
+                                        <td>
+                                            <input type="number" class="form-control form-control-sm text-center"
+                                                id="edit-{{ $eye }}-{{ $field }}"
+                                                name="prescription[{{ $eye }}][{{ $field }}]"
+                                                aria-label="{{ $label }} {{ $fieldLabel }}"
+                                                value="{{ old("prescription.$eye.$field") }}"
+                                                min="{{ $min }}" max="{{ $max }}" step="{{ $step }}">
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <th>ADD</th>
+                                <td colspan="4">
+                                    <input type="number" class="form-control form-control-sm text-center mx-auto"
+                                        id="edit-prescription-add" name="prescription[add]" aria-label="ADD"
+                                        value="{{ old('prescription.add') }}"
+                                        min="-30" max="30" step="0.25" style="max-width: 12rem">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="small text-muted mb-0">Kolom resep boleh dikosongkan jika belum ada nilainya.</p>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endif
 
 @if(Auth::user()->role === 'PELANGGAN')
 <div class="modal fade" id="createOrderModal" tabindex="-1" aria-hidden="true">
@@ -159,6 +262,34 @@
             });
         });
     });
+
+    const editOrderModal = document.getElementById('editOrderModal');
+    if (editOrderModal) {
+        editOrderModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            const orderId = button.dataset.orderId;
+            document.getElementById('editOrderForm').action = `/orders/${orderId}`;
+            document.getElementById('edit-order-id').value = orderId;
+            document.getElementById('edit-planned-visit-date').value = button.dataset.plannedVisitDate || '';
+            document.getElementById('edit-customer-address').value = button.dataset.customerAddress || '';
+            document.getElementById('edit-customer-phone').value = button.dataset.customerPhone || '';
+
+            ['od', 'os'].forEach((eye) => {
+                ['sph', 'cyl', 'ax', 'pd'].forEach((field) => {
+                    document.getElementById(`edit-${eye}-${field}`).value = button.dataset[`${eye}${field[0].toUpperCase()}${field.slice(1)}`] || '';
+                });
+            });
+            document.getElementById('edit-prescription-add').value = button.dataset.prescriptionAdd || '';
+        });
+    }
+
+    @if($errors->any() && old('order_id'))
+        document.addEventListener('DOMContentLoaded', function () {
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('editOrderModal')).show();
+        });
+    @endif
 </script>
 @endpush
 @endsection

@@ -118,6 +118,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
         Route::post('/checkout', [OrderController::class, 'confirmCheckout'])->name('checkout.confirm');
         Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+        Route::middleware(RoleMiddleware::class . ':KARYAWAN,ADMIN')->patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     });
 
     Route::middleware(RoleMiddleware::class . ':PELANGGAN')->group(function () {
